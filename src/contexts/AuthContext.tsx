@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-import { getCookie, deleteCookie } from "../services/cookieUtils";
+import { deleteCookie } from "../services/cookieUtils";
 
 type User = {
   id: string;
