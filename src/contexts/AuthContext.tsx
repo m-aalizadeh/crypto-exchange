@@ -80,7 +80,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "AUTH_REQUEST" });
     try {
       const response = await api.post("/user/signin", { username, password });
-      console.log(response);
       dispatch({ type: "AUTH_SUCCESS", payload: response.data.data });
       navigate("/dashboard");
     } catch (error) {
@@ -114,14 +113,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       await api.post("/user/logout");
     } finally {
-      // Clear all auth-related cookies
-      deleteCookie("csrf_token");
-      deleteCookie("refresh_token");
       dispatch({ type: "AUTH_LOGOUT" });
       navigate("/login");
     }
   };
-  console.log(state);
+
   return (
     <AuthContext.Provider value={{ state, login, register, logout }}>
       {children}

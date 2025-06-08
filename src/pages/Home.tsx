@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 // import { Logo } from "../../components/Logo";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../contexts/AuthContext";
 
 export const Home = () => {
-  const { user } = useAuth();
+  const {
+    state: { user },
+  } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50">
