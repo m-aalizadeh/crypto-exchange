@@ -14,25 +14,18 @@ export const AppRoutes = () => {
   return (
     <Suspense fallback={<LoadingSpinner fullScreen />}>
       <Routes>
-        {/* Public Routes */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
         </Route>
-
-        {/* Auth Routes (Login/Register) */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
-
-        {/* Protected Routes */}
         <Route element={<MainLayout />}>
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Route>
-
-        {/* 404 Not Found */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
