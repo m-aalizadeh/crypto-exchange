@@ -1,20 +1,15 @@
-// components/PriceTicker.tsx
 import { useSocket } from "../contexts/SocketContext";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FiArrowUp,
-  FiArrowDown,
-  FiRefreshCw,
-  FiChevronLeft,
-  FiChevronRight,
-} from "react-icons/fi";
+import { FiRefreshCw, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import SparklineChart from "./SparklineChart";
 
 type PriceData = {
   symbol: string;
   price: string;
   name: string;
-  change?: string;
+  change: string;
+  sparkline: string[];
 };
 
 const ITEMS_PER_PAGE = 10;
@@ -27,24 +22,14 @@ const PriceTicker = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Transform prices data and calculate changes
   useEffect(() => {
     if (prices.length > 0) {
       setIsLoading(false);
       setLastUpdated(new Date().toLocaleTimeString());
 
-      setDisplayedPrices((prev) => {
-        return prices.map(({ symbol, price, name, change }) => {
-          const previousEntry = prev.find((p) => p.symbol === symbol);
-          const previousPrice = previousEntry
-            ? parseFloat(previousEntry.price)
-            : 0;
+      const mappedPrices = prices.map(
+        ({ symbol, price, name, change, sparkline }) => {
           const currentPrice = parseFloat(price);
-          // const priceChange = change ? parseFloat(change) : 0;
-          // previousPrice !== 0
-          //   ? ((currentPrice - previousPrice) / previousPrice) * 100
-          //   : 0;
-
           return {
             symbol,
             price: currentPrice.toLocaleString("en-US", {
@@ -55,31 +40,29 @@ const PriceTicker = () => {
             }),
             name,
             change,
+            sparkline,
           };
-        });
-      });
+        }
+      );
+      setDisplayedPrices(mappedPrices);
     }
   }, [prices]);
 
-  // Filter prices based on search term
   const filteredPrices = displayedPrices.filter((price) =>
     price.symbol.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredPrices.length / ITEMS_PER_PAGE);
   const paginatedPrices = filteredPrices.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  // Color variants for price changes
   const getChangeColor = (change: string | undefined) => {
     if (!change) return "text-gray-500";
     return parseFloat(change) >= 0 ? "text-green-500" : "text-red-500";
   };
 
-  // Animation variants
   const priceItemVariants = {
     hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0 },
@@ -153,50 +136,47 @@ const PriceTicker = () => {
             <div className="space-y-3 mb-4">
               <AnimatePresence>
                 {paginatedPrices.length > 0 ? (
-                  paginatedPrices.map(({ symbol, name, price, change }) => (
-                    <motion.div
-                      key={symbol}
-                      variants={priceItemVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      transition={{ duration: 0.3 }}
-                      className="flex items-center justify-between p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
-                    >
-                      <div className="flex items-center">
-                        <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                          <span className="text-sm font-medium text-white">
-                            {symbol}
-                          </span>
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-white">{name}</h3>
-                          {/* <p className="text-xs text-gray-400">
-                            Cryptocurrency
-                          </p> */}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-white">{price}</p>
-                        {change !== undefined && (
+                  paginatedPrices.map(
+                    ({ symbol, name, price, change, sparkline }) => (
+                      <motion.div
+                        key={symbol}
+                        variants={priceItemVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        transition={{ duration: 0.3 }}
+                        className="flex items-center justify-between p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+                      >
+                        <div className="flex items-center min-w-0">
                           <div
-                            className={`flex items-center justify-end ${getChangeColor(
-                              change
-                            )}`}
+                            className="w-10 h-10 rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                            style={{ backgroundColor: "#6b7280" }}
                           >
-                            {parseFloat(change) >= 0 ? (
-                              <FiArrowUp className="mr-1" />
-                            ) : (
-                              <FiArrowDown className="mr-1" />
-                            )}
-                            <span className="text-sm">
-                              {Math.abs(parseFloat(change)).toFixed(2)}%
+                            <span className="text-sm font-medium text-white">
+                              {symbol.slice(0, 3)}
                             </span>
                           </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  ))
+                          <div className="min-w-0">
+                            <h3 className="font-medium text-white truncate">
+                              {name}
+                            </h3>
+                          </div>
+                        </div>
+                        <div className="flex items-center ml-4">
+                          <div className="text-right mr-4">
+                            <p className="font-semibold text-white">{price}</p>
+                          </div>
+                          <div className="w-24 h-12">
+                            <SparklineChart
+                              data={sparkline}
+                              currentPrice={price}
+                              change={change}
+                            />
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  )
                 ) : (
                   <div className="text-center py-8 text-gray-400">
                     No matching cryptocurrencies found

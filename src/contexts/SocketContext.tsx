@@ -14,7 +14,8 @@ type Price = {
   symbol: string;
   price: string;
   name: string;
-  change?: string;
+  change: string;
+  sparkline: string[];
 };
 
 type Prices = Price[];
