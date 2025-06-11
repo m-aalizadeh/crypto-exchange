@@ -1,24 +1,33 @@
 import { SocketProvider } from "../contexts/SocketContext";
-import { useAuth } from "../contexts/AuthContext";
-import PriceTicker from "../components/PriceTicker";
-
+import MarketOverview from "../components/MarketOverview";
+import MarketCapChart from "../components/MarketCapChart";
+import CryptocurrencyTable from "../components/CryptocurrencyTable";
+import TopMovers from "../components/TopMovers";
 export const Home = () => {
-  const {
-    state: { user },
-  } = useAuth();
-
   return (
     <SocketProvider>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
-            Crypto Exchange Platform
+      <main className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
+            Cryptocurrency Market Overview
           </h1>
-          <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
-            Trade cryptocurrencies with ease and security.
-          </p>
-          <div className="mt-8 flex justify-center space-x-3">
-            <PriceTicker />
+          <MarketOverview />
+          <div className="flex flex-col lg:flex-row gap-6 mb-8">
+            <div className="lg:w-2/3 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+              <MarketCapChart />
+            </div>
+            <div className="lg:w-1/3">
+              <TopMovers />
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+            <div className="p-6">
+              <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+                Top 100 Cryptocurrencies by Market Cap
+              </h2>
+              <CryptocurrencyTable pageSize={10} />
+            </div>
           </div>
         </div>
       </main>
