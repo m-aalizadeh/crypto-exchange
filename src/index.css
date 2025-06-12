@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-light-background text-light-text dark:bg-dark-background dark:text-dark-text transition-colors duration-200;
+  }
+
+  .theme-transition {
+    @apply transition-colors duration-200;
+  }
+}
