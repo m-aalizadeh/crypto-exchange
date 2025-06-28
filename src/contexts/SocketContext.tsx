@@ -30,6 +30,7 @@ interface SocketContextType {
   socket: Socket | null;
   messages: Message[];
   prices: Prices;
+  isLoading: boolean;
   sendMessage: (message: Omit<Message, "time">) => void;
 }
 
@@ -53,9 +54,10 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [prices, setPrices] = useState<Prices>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Initialize socket connection
+    setIsLoading(true);
     const newSocket = io("http://localhost:8000");
     setSocket(newSocket);
 
@@ -67,6 +69,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     // Listen for price updates
     newSocket.on("updatePrices", (data: Prices) => {
       console.log(data);
+      setIsLoading(false);
       setPrices(data);
     });
 
@@ -90,6 +93,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     socket,
     messages,
     prices,
+    isLoading,
     sendMessage,
   };
 

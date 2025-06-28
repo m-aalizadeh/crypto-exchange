@@ -65,7 +65,7 @@ const SparklineChart = ({
             content={({ payload }) => {
               if (!payload || payload.length === 0) return null;
               return (
-                <div className="bg-gray-800 text-white p-2 rounded shadow-lg text-xs">
+                <div className="dark:bg-gray-800 dark:text-white p-2 rounded shadow-lg text-xs">
                   <p>Price: ${payload[0].value?.toFixed(4)}</p>
                   <p>Current: ${parseFloat(currentPrice).toFixed(4)}</p>
                 </div>

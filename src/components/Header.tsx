@@ -1,21 +1,23 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth"; // Your auth hook
+import DarkModeToggle from "../components/DarkModeToggle";
 
 export const Header = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="dark:bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
-            <span className="ml-2 text-xl font-semibold text-gray-900 hidden md:inline">
+            <span className="ml-2 text-xl font-semibold dark:text-gray-900 hidden md:inline">
               Crypto Exchange
             </span>
           </Link>
         </div>
 
         <nav className="flex items-center space-x-4">
+          <DarkModeToggle />
           {user ? (
             <>
               <Link
@@ -47,7 +49,7 @@ export const Header = () => {
               </Link>
               <Link
                 to="/register"
-                className="ml-4 inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+                className="ml-4 inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm dark:text-white bg-indigo-600 hover:bg-indigo-700"
               >
                 Sign up
               </Link>

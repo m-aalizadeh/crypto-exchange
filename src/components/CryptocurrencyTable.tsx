@@ -5,15 +5,15 @@ import {
   formatPercentage,
   formatNumber,
 } from "../lib/formatters";
-import { useSocket } from "../contexts/SocketContext";
 interface CryptocurrencyTableProps {
+  data: any[];
   pageSize?: number;
 }
 
 const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
+  data,
   pageSize = 10,
 }) => {
-  const { prices: data = [] } = useSocket();
   const [currentPageSize, setCurrentPageSize] = useState(pageSize);
 
   const columns = React.useMemo(

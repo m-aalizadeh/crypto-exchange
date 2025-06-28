@@ -1,36 +1,40 @@
-import { SocketProvider } from "../contexts/SocketContext";
 import MarketOverview from "../components/MarketOverview";
 import MarketCapChart from "../components/MarketCapChart";
 import CryptocurrencyTable from "../components/CryptocurrencyTable";
 import TopMovers from "../components/TopMovers";
-export const Home = () => {
-  return (
-    <SocketProvider>
-      <main className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
-            Cryptocurrency Market Overview
-          </h1>
-          <MarketOverview />
-          <div className="flex flex-col lg:flex-row gap-6 mb-8">
-            <div className="lg:w-2/3 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-              <MarketCapChart />
-            </div>
-            <div className="lg:w-1/3">
-              <TopMovers />
-            </div>
-          </div>
+import { useSocket } from "../contexts/SocketContext";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-            <div className="p-6">
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
-                Top 100 Cryptocurrencies by Market Cap
-              </h2>
-              <CryptocurrencyTable pageSize={10} />
-            </div>
-          </div>
+const Home = () => {
+  const { prices = [], isLoading } = useSocket();
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  return (
+    <div className="container mx-auto px-4">
+      <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
+        Cryptocurrency Market Overview
+      </h1>
+      <MarketOverview data={prices} />
+      <div className="flex flex-col lg:flex-row gap-6 mb-8">
+        <div className="lg:w-2/3 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+          <MarketCapChart data={prices} />
         </div>
-      </main>
-    </SocketProvider>
+        <div className="lg:w-1/3">
+          <TopMovers data={prices} />
+        </div>
+      </div>
+
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+        <div className="p-6">
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+            Top 100 Cryptocurrencies by Market Cap
+          </h2>
+          <CryptocurrencyTable pageSize={10} data={prices} />
+        </div>
+      </div>
+    </div>
   );
 };
+
+export default Home;

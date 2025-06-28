@@ -1,8 +1,9 @@
 import { formatPercentage } from "../lib/formatters";
-import { useSocket } from "../contexts/SocketContext";
+interface TopMoversProps {
+  data: any[];
+}
 
-const TopMovers = () => {
-  const { prices: data = [] } = useSocket();
+const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
   if (!data.length) return null;
 
   const gainers = [...data]
@@ -99,7 +100,7 @@ const TopMovers = () => {
                   {coin.symbol.toUpperCase()}
                 </span>
               </div>
-              <span className="text-gray-500 text-sm">
+              <span className="dark:text-gray-500 text-sm">
                 Vol:{" "}
                 {formatPercentage((coin.total_volume / coin.market_cap) * 100)}
               </span>

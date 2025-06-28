@@ -1,12 +1,12 @@
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { formatCurrency } from "../lib/formatters";
-import { useSocket } from "../contexts/SocketContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-const MarketCapChart = () => {
-  const { prices: data = [] } = useSocket();
+interface MarketCapChartProps {
+  data: any[];
+}
+const MarketCapChart: React.FC<MarketCapChartProps> = ({ data }) => {
   if (!data.length) return null;
 
   const top10 = data.slice(0, 10);

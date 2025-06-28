@@ -6,7 +6,7 @@ import { AuthLayout } from "./pages/Layout/AuthLayout";
 import { Login } from "./pages/auth/Login";
 import { Register } from "./pages/auth/Registration";
 import { Dashboard } from "./pages/Dashboard";
-import { Home } from "./pages/Home";
+import { HomeWrapper } from "./pages/HomeWrapper";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { NotFound } from "./pages/NotFound";
 
@@ -15,7 +15,7 @@ export const AppRoutes = () => {
     <Suspense fallback={<LoadingSpinner fullScreen />}>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomeWrapper />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />

@@ -1,8 +1,9 @@
 import { formatCurrency, formatPercentage } from "../lib/formatters";
-import { useSocket } from "../contexts/SocketContext";
+interface MarketOverviewProps {
+  data: any[];
+}
 
-const MarketOverview = () => {
-  const { prices: data = [] } = useSocket();
+const MarketOverview: React.FC<MarketOverviewProps> = ({ data }) => {
   if (!data.length) return null;
 
   const totalMarketCap = data.reduce((sum, coin) => sum + coin.market_cap, 0);
