@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { MainLayout } from "./pages/Layout/MainLayout";
 import { AuthLayout } from "./pages/Layout/AuthLayout";
+import { HomeLayout } from "./pages/Layout/HomeLayout";
 import { Login } from "./pages/auth/Login";
 import { Register } from "./pages/auth/Registration";
 import { Dashboard } from "./pages/Dashboard";
@@ -14,7 +15,7 @@ export const AppRoutes = () => {
   return (
     <Suspense fallback={<LoadingSpinner fullScreen />}>
       <Routes>
-        <Route element={<MainLayout />}>
+        <Route element={<HomeLayout />}>
           <Route path="/" element={<HomeWrapper />} />
         </Route>
         <Route element={<AuthLayout />}>
