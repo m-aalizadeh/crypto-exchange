@@ -1,4 +1,3 @@
-// src/components/Dashboard.tsx
 import { useAuth } from "../contexts/AuthContext";
 
 export const Dashboard = () => {

@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { io, Socket } from "socket.io-client";
 
-// Define types for the context
 type Message = {
   text: string;
   sender: string;
@@ -36,7 +35,6 @@ interface SocketContextType {
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
-// Custom hook for using the socket context
 export const useSocket = (): SocketContextType => {
   const context = useContext(SocketContext);
   if (!context) {
@@ -45,7 +43,6 @@ export const useSocket = (): SocketContextType => {
   return context;
 };
 
-// Provider component
 interface SocketProviderProps {
   children: ReactNode;
 }

@@ -1,22 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useTable, usePagination } from "react-table";
+import type {
+  TableInstance,
+  UsePaginationInstanceProps,
+  UsePaginationState,
+  Column,
+  Row,
+} from "react-table";
 import {
   formatCurrency,
   formatPercentage,
   formatNumber,
 } from "../lib/formatters";
+
+interface Cryptocurrency {
+  id: string;
+  name: string;
+  symbol: string;
+  image: string;
+  market_cap_rank: number;
+  current_price: number;
+  price_change_percentage_24h: number;
+  market_cap: number;
+  total_volume: number;
+  circulating_supply: number;
+  max_supply?: number;
+  [key: string]: any;
+}
+
 interface CryptocurrencyTableProps {
-  data: any[];
+  data: Cryptocurrency[];
   pageSize?: number;
 }
+
+type TableInstanceWithPagination<T extends object> = TableInstance<T> &
+  UsePaginationInstanceProps<T> & {
+    state: UsePaginationState<T>;
+  };
 
 const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
   data,
   pageSize = 10,
 }) => {
   const [currentPageSize, setCurrentPageSize] = useState(pageSize);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const columns = React.useMemo(
+  // Filter data based on search term
+  const filteredData = useMemo(() => {
+    if (!searchTerm) return data;
+    const term = searchTerm.toLowerCase();
+    return data.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(term) ||
+        coin.symbol.toLowerCase().includes(term)
+    );
+  }, [data, searchTerm]);
+
+  const columns = React.useMemo<Column<Cryptocurrency>[]>(
     () => [
       {
         Header: "#",
@@ -28,7 +68,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
       {
         Header: "Coin",
         accessor: "name",
-        Cell: ({ row }: { row: any }) => (
+        Cell: ({ row }: { row: Row<Cryptocurrency> }) => (
           <div className="flex items-center space-x-3">
             <img
               src={row.original.image}
@@ -79,7 +119,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
       {
         Header: "Circulating Supply",
         accessor: "circulating_supply",
-        Cell: ({ row }: { row: any }) => (
+        Cell: ({ row }: { row: Row<Cryptocurrency> }) => (
           <div>
             <div className="font-medium">
               {formatNumber(row.original.circulating_supply)}{" "}
@@ -124,14 +164,62 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
   } = useTable(
     {
       columns,
-      data,
+      data: filteredData,
       initialState: { pageIndex: 0, pageSize: currentPageSize },
     },
     usePagination
-  );
+  ) as TableInstanceWithPagination<Cryptocurrency>;
 
   return (
     <div className="space-y-4">
+      {/* Search Input */}
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg
+            className="h-5 w-5 text-gray-400"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
+        <input
+          type="text"
+          placeholder="Search by name or symbol..."
+          className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            gotoPage(0); // Reset to first page when searching
+          }}
+        />
+        {searchTerm && (
+          <button
+            onClick={() => {
+              setSearchTerm("");
+              gotoPage(0);
+            }}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+          >
+            <svg
+              className="h-5 w-5 text-gray-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
+
       <div className="overflow-x-auto">
         <table
           {...getTableProps()}
@@ -155,24 +243,35 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
             {...getTableBodyProps()}
             className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700"
           >
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-700"
+            {page.length > 0 ? (
+              page.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr
+                    {...row.getRowProps()}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
+                    {row.cells.map((cell) => (
+                      <td
+                        {...cell.getCellProps()}
+                        className="px-6 py-4 whitespace-nowrap text-sm"
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400"
                 >
-                  {row.cells.map((cell) => (
-                    <td
-                      {...cell.getCellProps()}
-                      className="px-6 py-4 whitespace-nowrap text-sm"
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
+                  No cryptocurrencies found matching your search
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -187,9 +286,13 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
             </span>{" "}
             to{" "}
             <span className="font-medium">
-              {Math.min((pageIndex + 1) * currentPageSizeState, data.length)}
+              {Math.min(
+                (pageIndex + 1) * currentPageSizeState,
+                filteredData.length
+              )}
             </span>{" "}
-            of <span className="font-medium">{data.length}</span> results
+            of <span className="font-medium">{filteredData.length}</span>{" "}
+            results
           </span>
 
           <select
