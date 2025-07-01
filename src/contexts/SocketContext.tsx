@@ -1,4 +1,3 @@
-// context/SocketContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { io, Socket } from "socket.io-client";
@@ -58,19 +57,15 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     const newSocket = io("http://localhost:8000");
     setSocket(newSocket);
 
-    // Listen for incoming messages
     newSocket.on("receiveMessage", (message: Message) => {
       setMessages((prev) => [...prev, message]);
     });
 
-    // Listen for price updates
     newSocket.on("updatePrices", (data: Prices) => {
-      console.log(data);
       setIsLoading(false);
       setPrices(data);
     });
 
-    // Cleanup on unmount
     return () => {
       newSocket.disconnect();
     };

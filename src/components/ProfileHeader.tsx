@@ -14,7 +14,6 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="flex items-center justify-between px-4 py-3 sm:px-6">
-        {/* Left side - Sidebar toggle and breadcrumbs */}
         <div className="flex items-center space-x-4">
           <button
             onClick={toggleSidebar}
@@ -25,40 +24,8 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
           >
             <Icon name="menu" className="h-6 w-6" />
           </button>
-
-          <nav
-            className="hidden md:flex items-center space-x-4"
-            aria-label="Breadcrumb"
-          >
-            <div className="flex items-center">
-              <a href="#" className="text-gray-400 hover:text-gray-500">
-                <Icon name="home" className="flex-shrink-0 h-5 w-5" />
-                <span className="sr-only">Home</span>
-              </a>
-            </div>
-            <div className="flex items-center">
-              <svg
-                className="flex-shrink-0 h-5 w-5 text-gray-300"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-              >
-                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
-              </svg>
-              <a
-                href="#"
-                className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-              >
-                Dashboard
-              </a>
-            </div>
-          </nav>
         </div>
-
-        {/* Right side - Search and user dropdown */}
         <div className="flex items-center space-x-4">
-          {/* Search */}
           <div className="relative hidden md:block">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Icon name="search" className="h-5 w-5 text-gray-400" />
@@ -69,8 +36,6 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
-
-          {/* Notifications */}
           <button
             type="button"
             className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -81,8 +46,6 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
               <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
             </div>
           </button>
-
-          {/* User dropdown */}
           <div className="relative ml-3">
             <div className="flex items-center space-x-2">
               <div>
@@ -106,8 +69,6 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
                 </div>
               </button>
             </div>
-
-            {/* Dropdown menu (hidden by default) */}
             <div
               className="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
               role="menu"

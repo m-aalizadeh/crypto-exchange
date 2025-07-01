@@ -60,7 +60,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, dispatch] = useReducer(authReducer, initialState);
   const navigate = useNavigate();
 
-  // Initialize auth state from server-side session
   useEffect(() => {
     const initializeAuth = async () => {
       dispatch({ type: "AUTH_REQUEST" });

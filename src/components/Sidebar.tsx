@@ -15,9 +15,8 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
 
   const navItems = [
     { path: "/dashboard", icon: "dashboard", label: "Dashboard" },
-    { path: "/projects", icon: "folder", label: "Projects" },
-    { path: "/reports", icon: "analytics", label: "Reports" },
-    { path: "/settings", icon: "settings", label: "Settings" },
+    { path: "/watchlist", icon: "folder", label: "Watchlist" },
+    { path: "/profile", icon: "profile", label: "Profile" },
   ];
 
   return (
@@ -27,11 +26,8 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
       }`}
     >
       <div className="flex flex-col h-full">
-        {/* Sidebar Header */}
         <div className="p-4 flex items-center justify-between border-b border-gray-700">
-          {!isCollapsed && (
-            <h1 className="text-xl font-semibold">Admin Panel</h1>
-          )}
+          {!isCollapsed && <h1 className="text-xl font-semibold">Panel</h1>}
           <button
             onClick={toggleCollapse}
             className="p-2 rounded-md hover:bg-gray-700"
@@ -40,8 +36,6 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
             <Icon name={isCollapsed ? "chevron-right" : "chevron-left"} />
           </button>
         </div>
-
-        {/* User Profile */}
         <div className="p-4 flex items-center border-b border-gray-700">
           <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center mr-3">
             {user?.username?.charAt(0).toUpperCase() || "U"}
@@ -55,8 +49,6 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
             </div>
           )}
         </div>
-
-        {/* Navigation */}
         <nav className="flex-1 overflow-y-auto">
           <ul className="space-y-1 p-2">
             {navItems.map((item) => (
@@ -76,8 +68,6 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
             ))}
           </ul>
         </nav>
-
-        {/* Footer */}
         <div className="p-4 border-t border-gray-700">
           <button
             onClick={logout}
