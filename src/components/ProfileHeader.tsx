@@ -1,5 +1,5 @@
 import { useAuth } from "../contexts/AuthContext";
-import { Icon } from "./Icon";
+import { Menu, Search, Bell } from "lucide-react";
 
 type HeaderProps = {
   toggleSidebar: () => void;
@@ -22,13 +22,13 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
               isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
             }
           >
-            <Icon name="menu" className="h-6 w-6" />
+            <Menu />
           </button>
         </div>
         <div className="flex items-center space-x-4">
           <div className="relative hidden md:block">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Icon name="search" className="h-5 w-5 text-gray-400" />
+              <Search />
             </div>
             <input
               type="text"
@@ -42,7 +42,7 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
           >
             <span className="sr-only">View notifications</span>
             <div className="relative">
-              <Icon name="bell" className="h-6 w-6" />
+              <Bell />
               <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
             </div>
           </button>
@@ -68,41 +68,6 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
                   {user?.username?.charAt(0).toUpperCase() || "U"}
                 </div>
               </button>
-            </div>
-            <div
-              className="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="user-menu-button"
-              tabIndex={-1}
-            >
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                role="menuitem"
-                tabIndex={-1}
-                id="user-menu-item-0"
-              >
-                Your Profile
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                role="menuitem"
-                tabIndex={-1}
-                id="user-menu-item-1"
-              >
-                Settings
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                role="menuitem"
-                tabIndex={-1}
-                id="user-menu-item-2"
-              >
-                Sign out
-              </a>
             </div>
           </div>
         </div>
