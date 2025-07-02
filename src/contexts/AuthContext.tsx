@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useReducer, useEffect } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
+import { deleteCookie } from "../services/cookieUtils";
 import api from "../services/api";
 
 type User = {
@@ -50,6 +51,7 @@ type AuthContextType = {
     password: string
   ) => Promise<void>;
   logout: () => Promise<void>;
+  getCurrentUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -60,24 +62,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, dispatch] = useReducer(authReducer, initialState);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const initializeAuth = async () => {
-      dispatch({ type: "AUTH_REQUEST" });
-      try {
-        const response = await api.get("/user/currentUser");
-        dispatch({ type: "AUTH_SUCCESS", payload: response.data.user });
-      } catch (error) {
-        dispatch({ type: "AUTH_FAILURE", payload: "Session expired" });
-      }
-    };
-    initializeAuth();
-  }, []);
-
   const login = async (username: string, password: string) => {
     dispatch({ type: "AUTH_REQUEST" });
     try {
       const response = await api.post("/user/signin", { username, password });
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data.data });
+      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
       navigate("/dashboard");
     } catch (error) {
       const errorMessage = error.response?.data?.message || "Login failed";
@@ -97,7 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         email,
         password,
       });
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data.data });
+      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
       navigate("/dashboard");
     } catch (error) {
       const errorMessage =
@@ -106,17 +95,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const getCurrentUser = async () => {
+    dispatch({ type: "AUTH_REQUEST" });
+    try {
+      const response = await api.get("/user/currentUser");
+      dispatch({ type: "AUTH_SUCCESS", payload: response.user });
+    } catch (error) {
+      dispatch({ type: "AUTH_FAILURE", payload: "Token got expired" });
+    }
+  };
+
   const logout = async () => {
     try {
       await api.post("/user/logout");
     } finally {
+      deleteCookie("token");
       dispatch({ type: "AUTH_LOGOUT" });
       navigate("/login");
     }
   };
 
   return (
-    <AuthContext.Provider value={{ state, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ state, login, register, logout, getCurrentUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
