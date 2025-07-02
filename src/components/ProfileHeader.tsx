@@ -52,9 +52,6 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
                 <p className="text-sm font-medium text-gray-700 hidden md:block">
                   {user?.username}
                 </p>
-                <p className="text-xs font-medium text-gray-500 hidden md:block">
-                  {user?.email}
-                </p>
               </div>
               <button
                 type="button"

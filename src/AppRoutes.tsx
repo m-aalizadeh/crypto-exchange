@@ -7,7 +7,9 @@ import { HomeLayout } from "./pages/Layout/HomeLayout";
 import { Login } from "./pages/auth/Login";
 import { Register } from "./pages/auth/Registration";
 import { Dashboard } from "./pages/Dashboard";
+import { Profile } from "./pages/Profile";
 import { HomeWrapper } from "./pages/HomeWrapper";
+import Watchlist from "./pages/Watchlist";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { NotFound } from "./pages/NotFound";
 
@@ -25,6 +27,8 @@ export const AppRoutes = () => {
         <Route element={<MainLayout />}>
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/profile" element={<Profile />} />
+            <Route path="/dashboard/watchlist" element={<Watchlist />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

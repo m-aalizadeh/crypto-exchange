@@ -19,8 +19,8 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
 
   const navItems = [
     { path: "/dashboard", icon: <LayoutDashboard />, label: "Dashboard" },
-    { path: "/watchlist", icon: <Folder />, label: "Watchlist" },
-    { path: "/profile", icon: <User />, label: "Profile" },
+    { path: "/dashboard/watchlist", icon: <Folder />, label: "Watchlist" },
+    { path: "/dashboard/profile", icon: <User />, label: "Profile" },
   ];
 
   return (
