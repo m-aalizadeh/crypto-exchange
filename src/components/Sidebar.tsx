@@ -15,10 +15,7 @@ type SidebarProps = {
 };
 
 export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
-  const {
-    state: { user },
-    logout,
-  } = useAuth();
+  const { logout } = useAuth();
 
   const navItems = [
     { path: "/dashboard", icon: <LayoutDashboard />, label: "Dashboard" },

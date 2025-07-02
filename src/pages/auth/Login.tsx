@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import { Button } from "../../components/Button";
 import { useAuth } from "../../contexts/AuthContext";
