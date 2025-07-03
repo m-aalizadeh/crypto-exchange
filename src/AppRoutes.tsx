@@ -7,7 +7,7 @@ import { HomeLayout } from "./pages/Layout/HomeLayout";
 import { Login } from "./pages/auth/Login";
 import { Register } from "./pages/auth/Registration";
 import { Dashboard } from "./pages/Dashboard";
-import { Profile } from "./pages/Profile";
+import Profile from "./pages/Profile";
 import { HomeWrapper } from "./pages/HomeWrapper";
 import Watchlist from "./pages/Watchlist";
 import { LoadingSpinner } from "./components/LoadingSpinner";

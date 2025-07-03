@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteCookie } from "../services/cookieUtils";
+import useToast from "../hooks/useToast";
 import api from "../services/api";
 
 type User = {
-  id: string;
+  _id: string;
   username: string;
   email: string;
 };
@@ -61,15 +62,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const login = async (username: string, password: string) => {
     dispatch({ type: "AUTH_REQUEST" });
     try {
       const response = await api.post("/user/signin", { username, password });
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
-      navigate("/dashboard");
-    } catch (error) {
+      if (response.data) {
+        toast.showSuccess("Login successful");
+        dispatch({ type: "AUTH_SUCCESS", payload: response.data });
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
       const errorMessage = error.response?.data?.message || "Login failed";
+      toast.showError(errorMessage);
       dispatch({ type: "AUTH_FAILURE", payload: errorMessage });
     }
   };
@@ -86,11 +92,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         email,
         password,
       });
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
-      navigate("/dashboard");
-    } catch (error) {
+      if (response.data) {
+        toast.showSuccess("Login successful");
+        dispatch({ type: "AUTH_SUCCESS", payload: response.data });
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || "Registration failed";
+      toast.showError(errorMessage);
       dispatch({ type: "AUTH_FAILURE", payload: errorMessage });
     }
   };
@@ -99,7 +109,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "AUTH_REQUEST" });
     try {
       const response = await api.get("/user/currentUser");
-      dispatch({ type: "AUTH_SUCCESS", payload: response.user });
+      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
     } catch (error) {
       dispatch({ type: "AUTH_FAILURE", payload: "Token got expired" });
     }
@@ -107,7 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = async () => {
     try {
-      await api.post("/user/logout");
+      await api.get("/user/logout");
     } finally {
       deleteCookie("token");
       dispatch({ type: "AUTH_LOGOUT" });
