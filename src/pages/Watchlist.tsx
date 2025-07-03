@@ -1,59 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiStar, FiX, FiPlus } from "react-icons/fi";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../services/api";
+
+type Price = {
+  id: string;
+  symbol: string;
+  name: string;
+  image: string;
+  current_price: number;
+  market_cap: number;
+  price_change_percentage_24h: number;
+};
 
 const Watchlist = () => {
-  const allCryptos = [
-    {
-      id: "bitcoin",
-      symbol: "btc",
-      name: "Bitcoin",
-      image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
-      current_price: 51234.78,
-      price_change_percentage_24h: 2.34,
-      market_cap: 1000000000000,
-    },
-    {
-      id: "ethereum",
-      symbol: "eth",
-      name: "Ethereum",
-      image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
-      current_price: 2987.65,
-      price_change_percentage_24h: -1.23,
-      market_cap: 358000000000,
-    },
-    {
-      id: "cardano",
-      symbol: "ada",
-      name: "Cardano",
-      image: "https://assets.coingecko.com/coins/images/975/large/cardano.png",
-      current_price: 1.45,
-      price_change_percentage_24h: 5.67,
-      market_cap: 49000000000,
-    },
-    {
-      id: "solana",
-      symbol: "sol",
-      name: "Solana",
-      image: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
-      current_price: 145.89,
-      price_change_percentage_24h: 8.91,
-      market_cap: 48000000000,
-    },
-    {
-      id: "ripple",
-      symbol: "xrp",
-      name: "XRP",
-      image:
-        "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png",
-      current_price: 0.54,
-      price_change_percentage_24h: -0.45,
-      market_cap: 26000000000,
-    },
-  ];
-
-  const [watchlist, setWatchlist] = useState([allCryptos[0], allCryptos[1]]);
+  const {
+    state: { user },
+  } = useAuth();
+  const [allCryptos, setAllCryptos] = useState<Price[]>([]);
+  const [watchlist, setWatchlist] = useState<Price[]>([]);
   const [isAdding, setIsAdding] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const fetchCryptos = async () => {
+      const response = await api.get("/allCryptos");
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        setAllCryptos(response.data);
+      }
+    };
+    const fetchWatchlist = async () => {
+      const response = await api.get(`/watchlist/${user?._id}`);
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        setWatchlist(response.data);
+      }
+    };
+    fetchWatchlist();
+    fetchCryptos();
+  }, []);
 
   const availableCryptos = allCryptos.filter(
     (crypto) =>
@@ -62,18 +46,26 @@ const Watchlist = () => {
         crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const handleAddToWatchlist = (cryptoId: string) => {
-    const crypto = allCryptos.find((crypto) => crypto.id === cryptoId);
-    if (!crypto) {
+  const handleAddToWatchlist = async (cryptoId: string) => {
+    const coinData = allCryptos.find((crypto) => crypto.id === cryptoId);
+    if (!coinData) {
       return;
     }
-    setWatchlist([...watchlist, crypto]);
+    setWatchlist([...watchlist, coinData]);
+    await api.post("/watchlist/addWatchlist", {
+      userId: user?._id,
+      coinData,
+    });
     setIsAdding(false);
     setSearchQuery("");
   };
 
-  const handleRemoveFromWatchlist = (cryptoId: string) => {
-    setWatchlist(watchlist.filter((item) => item.id !== cryptoId));
+  const handleRemoveFromWatchlist = async (coinId: string) => {
+    setWatchlist(watchlist.filter((item) => item.id !== coinId));
+    // await api.delete("/watchlist/removeFromWatchlist", {
+    //   coinId,
+    //   userId: user?._id,
+    // });
   };
 
   return (
