@@ -1,5 +1,10 @@
 import { useForm } from "react-hook-form";
-import type { SubmitHandler, FieldValues } from "react-hook-form";
+import type {
+  SubmitHandler,
+  FieldValues,
+  DefaultValues,
+  UseFormReturn,
+} from "react-hook-form";
 import * as LucideIcons from "lucide-react";
 import { Button } from "./Button";
 
@@ -21,7 +26,7 @@ type GenericFormProps<T extends FieldValues> = {
   onSubmit: SubmitHandler<T>;
   submitButtonText?: string;
   formClassName?: string;
-  defaultValues?: T;
+  defaultValues?: DefaultValues<T>;
   showRememberMe?: boolean;
 };
 
@@ -37,12 +42,19 @@ export const GenericForm = <T extends FieldValues>({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<T>({ defaultValues });
+  } = useForm<T>({ defaultValues }) as UseFormReturn<T>;
 
   return (
-    <form className={formClassName} onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className={formClassName}
+      onSubmit={handleSubmit(onSubmit as SubmitHandler<T>)}
+    >
       {fields.map((field) => {
-        const IconComponent = field.icon ? LucideIcons[field.icon] : undefined;
+        const IconComponent = field.icon
+          ? (LucideIcons[field.icon] as React.ComponentType<{
+              className: string;
+            }>)
+          : undefined;
         return (
           <div key={field.name}>
             <label
