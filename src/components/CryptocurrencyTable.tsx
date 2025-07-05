@@ -6,6 +6,7 @@ import type {
   UsePaginationState,
   Column,
   Row,
+  TableState,
 } from "react-table";
 import {
   formatCurrency,
@@ -33,9 +34,20 @@ interface CryptocurrencyTableProps {
   pageSize?: number;
 }
 
+interface TableStateWithPagination<T extends object>
+  extends UsePaginationState<T> {
+  pageIndex: number;
+  pageSize: number;
+}
+
+interface InitialTableState extends Partial<TableState<Cryptocurrency>> {
+  pageIndex: number;
+  pageSize: number;
+}
+
 type TableInstanceWithPagination<T extends object> = TableInstance<T> &
   UsePaginationInstanceProps<T> & {
-    state: UsePaginationState<T>;
+    state: TableStateWithPagination<T>;
   };
 
 const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
@@ -165,7 +177,10 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
     {
       columns,
       data: filteredData,
-      initialState: { pageIndex: 0, pageSize: currentPageSize },
+      initialState: {
+        pageIndex: 0,
+        pageSize: currentPageSize,
+      } as InitialTableState,
     },
     usePagination
   ) as TableInstanceWithPagination<Cryptocurrency>;
