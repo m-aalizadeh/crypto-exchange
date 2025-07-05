@@ -24,7 +24,7 @@ export const Login = () => {
       label: "Username",
       autoComplete: "username",
       required: true,
-      icon: "Mail",
+      icon: "Mail" as const,
     },
     {
       name: "password",
@@ -32,7 +32,7 @@ export const Login = () => {
       label: "Password",
       autoComplete: "current-password",
       required: true,
-      icon: "Lock",
+      icon: "Lock" as const,
     },
   ];
 
