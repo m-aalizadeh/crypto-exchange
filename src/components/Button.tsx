@@ -21,15 +21,19 @@ export const Button: FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    "inline-flex items-center justify-center rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200";
+    "inline-flex items-center justify-center rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-colors duration-200";
 
   const variantStyles = {
-    primary: "bg-indigo-600 dark:text-white hover:bg-indigo-700 shadow-sm",
-    secondary: "bg-indigo-100 text-indigo-700 hover:bg-indigo-200",
-    danger: "bg-red-600 dark:text-white hover:bg-red-700 shadow-sm",
+    primary:
+      "bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus:ring-indigo-500 shadow-sm",
+    secondary:
+      "bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-200 dark:text-indigo-800 dark:hover:bg-indigo-300",
+    danger:
+      "bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 focus:ring-red-500 shadow-sm",
     outline:
-      "border dark:border-gray-300 dark:bg-white dark:text-gray-700 dark:hover:bg-gray-50 shadow-sm",
-    ghost: "dark:text-gray-700 dark:hover:bg-gray-100",
+      "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 shadow-sm",
+    ghost:
+      "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800",
   };
 
   const sizeStyles = {
@@ -50,7 +54,7 @@ export const Button: FC<ButtonProps> = ({
     >
       {isLoading && (
         <svg
-          className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+          className="animate-spin -ml-1 mr-2 h-4 w-4 text-current"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"

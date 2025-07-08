@@ -74,7 +74,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         Header: "#",
         accessor: "market_cap_rank",
         Cell: ({ value }: { value: number }) => (
-          <span className="text-gray-500 dark:text-gray-400">{value}</span>
+          <span className="text-gray-600 dark:text-gray-400">{value}</span>
         ),
       },
       {
@@ -88,10 +88,10 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
               className="w-6 h-6 rounded-full"
             />
             <div>
-              <span className="font-medium text-gray-900 dark:text-white">
+              <span className="font-medium text-gray-900 dark:text-gray-100">
                 {row.original.name}
               </span>
-              <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
+              <span className="ml-2 text-xs text-gray-600 dark:text-gray-400">
                 {row.original.symbol.toUpperCase()}
               </span>
             </div>
@@ -102,7 +102,9 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         Header: "Price",
         accessor: "current_price",
         Cell: ({ value }: { value: number }) => (
-          <span className="font-medium">{formatCurrency(value)}</span>
+          <span className="font-medium text-gray-900 dark:text-gray-100">
+            {formatCurrency(value)}
+          </span>
         ),
       },
       {
@@ -111,7 +113,9 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         Cell: ({ value }: { value: number }) => (
           <span
             className={`font-medium ${
-              value >= 0 ? "text-green-500" : "text-red-500"
+              value >= 0
+                ? "text-green-500 dark:text-green-400"
+                : "text-red-500 dark:text-red-400"
             }`}
           >
             {value >= 0 ? "↑" : "↓"} {formatPercentage(Math.abs(value))}
@@ -121,26 +125,34 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
       {
         Header: "Market Cap",
         accessor: "market_cap",
-        Cell: ({ value }: { value: number }) => formatCurrency(value),
+        Cell: ({ value }: { value: number }) => (
+          <span className="text-gray-900 dark:text-gray-100">
+            {formatCurrency(value)}
+          </span>
+        ),
       },
       {
         Header: "Volume (24h)",
         accessor: "total_volume",
-        Cell: ({ value }: { value: number }) => formatCurrency(value),
+        Cell: ({ value }: { value: number }) => (
+          <span className="text-gray-900 dark:text-gray-100">
+            {formatCurrency(value)}
+          </span>
+        ),
       },
       {
         Header: "Circulating Supply",
         accessor: "circulating_supply",
         Cell: ({ row }: { row: Row<Cryptocurrency> }) => (
           <div>
-            <div className="font-medium">
+            <div className="font-medium text-gray-900 dark:text-gray-100">
               {formatNumber(row.original.circulating_supply)}{" "}
               {row.original.symbol.toUpperCase()}
             </div>
             {row.original.max_supply && (
-              <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1 dark:bg-gray-700">
+              <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1 dark:bg-gray-600">
                 <div
-                  className="bg-blue-600 h-1.5 rounded-full"
+                  className="bg-blue-600 dark:bg-blue-500 h-1.5 rounded-full"
                   style={{
                     width: `${
                       (row.original.circulating_supply /
@@ -191,7 +203,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg
-            className="h-5 w-5 text-gray-400"
+            className="h-5 w-5 text-gray-400 dark:text-gray-500"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -205,7 +217,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         <input
           type="text"
           placeholder="Search by name or symbol..."
-          className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 sm:text-sm"
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
@@ -218,13 +230,9 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
               setSearchTerm("");
               gotoPage(0);
             }}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 transition-colors duration-200"
           >
-            <svg
-              className="h-5 w-5 text-gray-400"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
+            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"
                 d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
@@ -235,18 +243,18 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         )}
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
         <table
           {...getTableProps()}
           className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
         >
-          <thead className="bg-gray-50 dark:bg-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-800">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <th
                     {...column.getHeaderProps()}
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                   >
                     {column.render("Header")}
                   </th>
@@ -256,7 +264,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
           </thead>
           <tbody
             {...getTableBodyProps()}
-            className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700"
+            className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700"
           >
             {page.length > 0 ? (
               page.map((row) => {
@@ -264,7 +272,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
                 return (
                   <tr
                     {...row.getRowProps()}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200"
                   >
                     {row.cells.map((cell) => (
                       <td
@@ -292,7 +300,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 px-4 py-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+      <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-700 dark:text-gray-300">
             Showing{" "}
@@ -316,10 +324,14 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
               setPageSize(Number(e.target.value));
               setCurrentPageSize(Number(e.target.value));
             }}
-            className="border border-gray-300 dark:border-gray-600 rounded-md shadow-sm pl-3 pr-8 py-1 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            className="border border-gray-300 dark:border-gray-600 rounded-md shadow-sm pl-3 pr-8 py-1 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200"
           >
             {[10, 25, 50, 100].map((size) => (
-              <option key={size} value={size}>
+              <option
+                key={size}
+                value={size}
+                className="bg-white dark:bg-gray-800"
+              >
                 Show {size}
               </option>
             ))}
@@ -330,10 +342,10 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
           <button
             onClick={() => gotoPage(0)}
             disabled={!canPreviousPage}
-            className={`px-3 py-1 rounded-md text-sm font-medium ${
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200 ${
               !canPreviousPage
-                ? "bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
-                : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                ? "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
             «
@@ -341,10 +353,10 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
           <button
             onClick={() => previousPage()}
             disabled={!canPreviousPage}
-            className={`px-3 py-1 rounded-md text-sm font-medium ${
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200 ${
               !canPreviousPage
-                ? "bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
-                : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                ? "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
             ‹
@@ -360,10 +372,10 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
                 <button
                   key={page}
                   onClick={() => gotoPage(page)}
-                  className={`px-3 py-1 rounded-md text-sm font-medium ${
+                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200 ${
                     pageIndex === page
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      ? "bg-blue-500 dark:bg-blue-600 text-white"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                   }`}
                 >
                   {page + 1}
@@ -371,10 +383,12 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
               ))}
             {pageOptions.length > 5 && pageIndex < pageOptions.length - 3 && (
               <>
-                <span className="px-1">...</span>
+                <span className="px-1 text-gray-700 dark:text-gray-300">
+                  ...
+                </span>
                 <button
                   onClick={() => gotoPage(pageOptions.length - 1)}
-                  className="px-3 py-1 rounded-md text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                  className="px-3 py-1 rounded-md text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
                 >
                   {pageOptions.length}
                 </button>
@@ -385,10 +399,10 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
           <button
             onClick={() => nextPage()}
             disabled={!canNextPage}
-            className={`px-3 py-1 rounded-md text-sm font-medium ${
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200 ${
               !canNextPage
-                ? "bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
-                : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                ? "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
             ›
@@ -396,10 +410,10 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
           <button
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
-            className={`px-3 py-1 rounded-md text-sm font-medium ${
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200 ${
               !canNextPage
-                ? "bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
-                : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                ? "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
             »

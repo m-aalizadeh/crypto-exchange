@@ -59,14 +59,14 @@ export const GenericForm = <T extends FieldValues>({
           <div key={field.name}>
             <label
               htmlFor={field.name}
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-200"
             >
               {field.label}
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
               {IconComponent && (
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <IconComponent className="h-5 w-5 text-gray-400" />
+                  <IconComponent className="h-5 w-5 text-gray-400 dark:text-gray-500 transition-colors duration-200" />
                 </div>
               )}
               <input
@@ -75,7 +75,15 @@ export const GenericForm = <T extends FieldValues>({
                 autoComplete={field.autoComplete}
                 className={`block w-full ${
                   field.icon ? "pl-10" : "pl-3"
-                } pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                } pr-3 py-2 border border-gray-300 dark:border-gray-600 
+                  bg-white dark:bg-gray-700 
+                  text-gray-900 dark:text-gray-100
+                  placeholder-gray-500 dark:placeholder-gray-400
+                  rounded-md shadow-sm 
+                  focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400
+                  disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed
+                  transition-colors duration-200
+                  sm:text-sm`}
                 placeholder={field.placeholder}
                 {...register(field.name as any, {
                   required: field.required
@@ -86,7 +94,7 @@ export const GenericForm = <T extends FieldValues>({
               />
             </div>
             {errors[field.name] && (
-              <p className="mt-2 text-sm text-red-600">
+              <p className="mt-2 text-sm text-red-600 dark:text-red-400 transition-colors duration-200">
                 {errors[field.name]?.message as string}
               </p>
             )}
@@ -101,11 +109,15 @@ export const GenericForm = <T extends FieldValues>({
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              className="h-4 w-4 text-indigo-600 dark:text-indigo-500 
+                focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                border-gray-300 dark:border-gray-600 
+                bg-white dark:bg-gray-700
+                rounded transition-colors duration-200"
             />
             <label
               htmlFor="remember-me"
-              className="ml-2 block text-sm text-gray-900"
+              className="ml-2 block text-sm text-gray-900 dark:text-gray-300 transition-colors duration-200"
             >
               Remember me
             </label>
