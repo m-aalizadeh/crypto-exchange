@@ -4,16 +4,19 @@ import CryptocurrencyTable from "../components/CryptocurrencyTable";
 import TopMovers from "../components/TopMovers";
 import { useSocket } from "../contexts/SocketContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const { prices = [], isLoading } = useSocket();
+  const { t } = useTranslation("translation");
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
-        Cryptocurrency Market Overview
+        {t(`cryptocurrencyMarketOverview`)}
       </h1>
       <MarketOverview data={prices} />
       <div className="flex flex-col lg:flex-row gap-6 mb-8">

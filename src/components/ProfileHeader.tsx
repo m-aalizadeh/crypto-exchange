@@ -1,5 +1,6 @@
 import { useAuth } from "../contexts/AuthContext";
 import { Menu, Search, Bell } from "lucide-react";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 type HeaderProps = {
   toggleSidebar: () => void;
@@ -26,6 +27,7 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
           </button>
         </div>
         <div className="flex items-center space-x-4">
+          <LanguageSwitcher />
           <div className="relative hidden md:block">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search />
