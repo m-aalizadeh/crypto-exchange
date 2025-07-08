@@ -1,19 +1,23 @@
 import { Link } from "react-router-dom";
 import DarkModeToggle from "../components/DarkModeToggle";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 export const Header = () => {
+  const { t } = useTranslation("translation");
   return (
     <header className="dark:bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
             <span className="ml-2 text-xl font-semibold dark:text-gray-900 hidden md:inline">
-              Crypto Exchange
+              {t(`cryptoExchange`)}
             </span>
           </Link>
         </div>
         <nav className="flex items-center space-x-4">
           <DarkModeToggle />
+          <LanguageSwitcher />
           <>
             <Link
               to="/login"
