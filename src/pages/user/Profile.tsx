@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { GenericForm } from "../components/GenericForm";
-import useToast from "../hooks/useToast";
-import api from "../services/api";
+import { useAuth } from "../../contexts/AuthContext";
+import { GenericForm } from "../../components/GenericForm";
+import useToast from "../../hooks/useToast";
+import api from "../../services/api";
 
 type ProfileFormData = {
   username: string;

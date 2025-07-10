@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiStar, FiX, FiPlus } from "react-icons/fi";
-import { useAuth } from "../contexts/AuthContext";
-import api from "../services/api";
+import { useAuth } from "../../contexts/AuthContext";
+import api from "../../services/api";
 
 type Price = {
   id: string;

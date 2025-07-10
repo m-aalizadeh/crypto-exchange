@@ -1,12 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { io, Socket } from "socket.io-client";
-
-type Message = {
-  text: string;
-  sender: string;
-  time: string;
-};
+import { setupCryptoSocket } from "../lib/sockets";
 
 type Price = {
   id: string;
@@ -25,11 +19,8 @@ type Price = {
 type Prices = Price[];
 
 interface SocketContextType {
-  socket: Socket | null;
-  messages: Message[];
   prices: Prices;
   isLoading: boolean;
-  sendMessage: (message: Omit<Message, "time">) => void;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -47,46 +38,30 @@ interface SocketProviderProps {
 }
 
 export const SocketProvider = ({ children }: SocketProviderProps) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
   const [prices, setPrices] = useState<Prices>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-    const newSocket = io("http://localhost:8000");
-    setSocket(newSocket);
 
-    newSocket.on("receiveMessage", (message: Message) => {
-      setMessages((prev) => [...prev, message]);
+    const cryptoSocket = setupCryptoSocket();
+    cryptoSocket.on("initialPrices", (initialPrices) => {
+      setPrices(initialPrices);
     });
 
-    newSocket.on("updatePrices", (data: Prices) => {
+    cryptoSocket.on("updatePrices", (updatedPrices) => {
       setIsLoading(false);
-      setPrices(data);
+      setPrices(updatedPrices);
     });
 
     return () => {
-      newSocket.disconnect();
+      cryptoSocket.disconnect();
     };
   }, []);
 
-  const sendMessage = (message: Omit<Message, "time">) => {
-    if (socket) {
-      const completeMessage: Message = {
-        ...message,
-        time: new Date().toLocaleTimeString(),
-      };
-      socket.emit("sendMessage", completeMessage);
-    }
-  };
-
   const value: SocketContextType = {
-    socket,
-    messages,
     prices,
     isLoading,
-    sendMessage,
   };
 
   return (

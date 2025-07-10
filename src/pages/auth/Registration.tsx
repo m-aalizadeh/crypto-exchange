@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
 import { Button } from "../../components/Button";
 import { useAuth } from "../../contexts/AuthContext";
@@ -19,12 +19,10 @@ export const Register = () => {
     formState: { errors },
   } = useForm<RegisterFormData>();
   const { register: registerUser } = useAuth();
-  const navigate = useNavigate();
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await registerUser(data.username, data.email, data.password);
-      navigate("/dashboard");
     } catch (error) {
       console.error("Registration failed:", error);
     }

@@ -6,10 +6,10 @@ import { AuthLayout } from "./pages/Layout/AuthLayout";
 import { HomeLayout } from "./pages/Layout/HomeLayout";
 import { Login } from "./pages/auth/Login";
 import { Register } from "./pages/auth/Registration";
-import { Dashboard } from "./pages/Dashboard";
-import Profile from "./pages/Profile";
+import { Dashboard } from "./pages/user/Dashboard";
+import Profile from "./pages/user/Profile";
 import { HomeWrapper } from "./pages/HomeWrapper";
-import Watchlist from "./pages/Watchlist";
+import Watchlist from "./pages/user/Watchlist";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { NotFound } from "./pages/NotFound";
 

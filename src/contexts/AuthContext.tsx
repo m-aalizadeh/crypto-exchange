@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteCookie } from "../services/cookieUtils";
+import { deleteCookie, setCookie } from "../services/cookieUtils";
 import useToast from "../hooks/useToast";
 import api from "../services/api";
 
@@ -8,6 +8,7 @@ type User = {
   _id: string;
   username: string;
   email: string;
+  online: boolean;
 };
 
 type AuthState = {
@@ -69,8 +70,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const response = await api.post("/user/signin", { username, password });
       if (response.data) {
+        const { token, user } = response.data;
+        localStorage.setItem("token", token);
         toast.showSuccess("Login successful");
-        dispatch({ type: "AUTH_SUCCESS", payload: response.data });
+        dispatch({ type: "AUTH_SUCCESS", payload: user });
         navigate("/dashboard");
       }
     } catch (error: any) {
@@ -93,8 +96,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         password,
       });
       if (response.data) {
-        toast.showSuccess("Login successful");
-        dispatch({ type: "AUTH_SUCCESS", payload: response.data });
+        const { token, user } = response.data;
+        localStorage.setItem("token", token);
+        toast.showSuccess("Registration successful");
+        dispatch({ type: "AUTH_SUCCESS", payload: user });
         navigate("/dashboard");
       }
     } catch (error: any) {
