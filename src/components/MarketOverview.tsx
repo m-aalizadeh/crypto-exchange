@@ -1,11 +1,12 @@
 import { formatCurrency, formatPercentage } from "../lib/formatters";
+import { useTranslation } from "react-i18next";
 interface MarketOverviewProps {
   data: any[];
 }
 
 const MarketOverview: React.FC<MarketOverviewProps> = ({ data }) => {
   if (!data.length) return null;
-
+  const { t } = useTranslation("translation");
   const totalMarketCap = data.reduce((sum, coin) => sum + coin.market_cap, 0);
   const totalVolume = data.reduce((sum, coin) => sum + coin.total_volume, 0);
   const btc = data.find((c) => c.id === "bitcoin");
@@ -20,7 +21,7 @@ const MarketOverview: React.FC<MarketOverviewProps> = ({ data }) => {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200 hover:shadow-md dark:shadow-gray-900/10">
         <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200">
-          Total Market Cap
+          {t(`totalMarketCap`)}
         </h3>
         <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2 transition-colors duration-200">
           {formatCurrency(totalMarketCap)}
@@ -29,7 +30,7 @@ const MarketOverview: React.FC<MarketOverviewProps> = ({ data }) => {
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200 hover:shadow-md dark:shadow-gray-900/10">
         <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200">
-          24h Volume
+          {t(`24hVolume`)}
         </h3>
         <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2 transition-colors duration-200">
           {formatCurrency(totalVolume)}
@@ -38,7 +39,7 @@ const MarketOverview: React.FC<MarketOverviewProps> = ({ data }) => {
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200 hover:shadow-md dark:shadow-gray-900/10">
         <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200">
-          BTC Dominance
+          {t(`btcDominance`)}
         </h3>
         <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2 transition-colors duration-200">
           {formatPercentage(btcDominance)}
@@ -47,7 +48,7 @@ const MarketOverview: React.FC<MarketOverviewProps> = ({ data }) => {
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200 hover:shadow-md dark:shadow-gray-900/10">
         <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200">
-          Market Sentiment
+          {t(`marketSentiment`)}
         </h3>
         <div className="flex items-center mt-2">
           <span

@@ -13,6 +13,7 @@ import {
   formatPercentage,
   formatNumber,
 } from "../lib/formatters";
+import { useTranslation } from "react-i18next";
 
 interface Cryptocurrency {
   id: string;
@@ -56,8 +57,8 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
 }) => {
   const [currentPageSize, setCurrentPageSize] = useState(pageSize);
   const [searchTerm, setSearchTerm] = useState("");
+  const { t } = useTranslation("translation");
 
-  // Filter data based on search term
   const filteredData = useMemo(() => {
     if (!searchTerm) return data;
     const term = searchTerm.toLowerCase();
@@ -71,14 +72,14 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
   const columns = React.useMemo<Column<Cryptocurrency>[]>(
     () => [
       {
-        Header: "#",
+        Header: t(`rank`),
         accessor: "market_cap_rank",
         Cell: ({ value }: { value: number }) => (
           <span className="text-gray-600 dark:text-gray-400">{value}</span>
         ),
       },
       {
-        Header: "Coin",
+        Header: t(`coin`),
         accessor: "name",
         Cell: ({ row }: { row: Row<Cryptocurrency> }) => (
           <div className="flex items-center space-x-3">
@@ -99,7 +100,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         ),
       },
       {
-        Header: "Price",
+        Header: t(`price`),
         accessor: "current_price",
         Cell: ({ value }: { value: number }) => (
           <span className="font-medium text-gray-900 dark:text-gray-100">
@@ -108,7 +109,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         ),
       },
       {
-        Header: "24h",
+        Header: t(`24h`),
         accessor: "price_change_percentage_24h",
         Cell: ({ value }: { value: number }) => (
           <span
@@ -123,7 +124,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         ),
       },
       {
-        Header: "Market Cap",
+        Header: t(`marketCap`),
         accessor: "market_cap",
         Cell: ({ value }: { value: number }) => (
           <span className="text-gray-900 dark:text-gray-100">
@@ -132,7 +133,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         ),
       },
       {
-        Header: "Volume (24h)",
+        Header: t(`volume`),
         accessor: "total_volume",
         Cell: ({ value }: { value: number }) => (
           <span className="text-gray-900 dark:text-gray-100">
@@ -141,7 +142,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         ),
       },
       {
-        Header: "Circulating Supply",
+        Header: t(`circulatingSupply`),
         accessor: "circulating_supply",
         Cell: ({ row }: { row: Row<Cryptocurrency> }) => (
           <div>
@@ -199,7 +200,6 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* Search Input */}
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg
@@ -216,12 +216,12 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
         </div>
         <input
           type="text"
-          placeholder="Search by name or symbol..."
+          placeholder={t("searchBy")}
           className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 sm:text-sm"
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            gotoPage(0); // Reset to first page when searching
+            gotoPage(0);
           }}
         />
         {searchTerm && (
@@ -291,31 +291,29 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
                   colSpan={columns.length}
                   className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400"
                 >
-                  No cryptocurrencies found matching your search
+                  {t("noCryptocurrenciesFound")}
                 </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
-
-      {/* Pagination Controls */}
       <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-700 dark:text-gray-300">
-            Showing{" "}
+            {t("showing")}{" "}
             <span className="font-medium">
               {pageIndex * currentPageSizeState + 1}
             </span>{" "}
-            to{" "}
+            {t("to")}{" "}
             <span className="font-medium">
               {Math.min(
                 (pageIndex + 1) * currentPageSizeState,
                 filteredData.length
               )}
             </span>{" "}
-            of <span className="font-medium">{filteredData.length}</span>{" "}
-            results
+            {t("of")} <span className="font-medium">{filteredData.length}</span>{" "}
+            {t("results")}
           </span>
 
           <select
@@ -332,7 +330,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
                 value={size}
                 className="bg-white dark:bg-gray-800"
               >
-                Show {size}
+                {t("show")} {size}
               </option>
             ))}
           </select>

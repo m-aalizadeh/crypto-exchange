@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
 import { Button } from "../../components/Button";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 type RegisterFormData = {
   username: string;
@@ -19,7 +20,7 @@ export const Register = () => {
     formState: { errors },
   } = useForm<RegisterFormData>();
   const { register: registerUser } = useAuth();
-
+  const { t } = useTranslation();
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await registerUser(data.username, data.email, data.password);
@@ -35,7 +36,7 @@ export const Register = () => {
           htmlFor="username"
           className="block text-sm font-medium text-gray-700"
         >
-          Username
+          {t("username")}
         </label>
         <div className="mt-1 relative rounded-md shadow-sm">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -59,7 +60,7 @@ export const Register = () => {
           htmlFor="email"
           className="block text-sm font-medium text-gray-700"
         >
-          Email address
+          {t("email")}
         </label>
         <div className="mt-1 relative rounded-md shadow-sm">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -83,7 +84,7 @@ export const Register = () => {
           htmlFor="password"
           className="block text-sm font-medium text-gray-700"
         >
-          Password
+          {t("password")}
         </label>
         <div className="mt-1 relative rounded-md shadow-sm">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -113,7 +114,7 @@ export const Register = () => {
           htmlFor="confirmPassword"
           className="block text-sm font-medium text-gray-700"
         >
-          Confirm Password
+          {t("confirmPassword")}
         </label>
         <div className="mt-1 relative rounded-md shadow-sm">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -140,17 +141,17 @@ export const Register = () => {
 
       <div>
         <Button type="submit" className="w-full">
-          Register
+          {t("register")}
         </Button>
       </div>
 
       <div className="text-sm text-center">
-        <span className="text-gray-600">Already have an account? </span>
+        <span className="text-gray-600">{t("alreadyHaveAccount")} </span>
         <Link
           to="/login"
           className="font-medium text-indigo-600 hover:text-indigo-500"
         >
-          Sign in
+          {t("signIn")}
         </Link>
       </div>
     </form>

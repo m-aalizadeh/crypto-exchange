@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FiStar, FiX, FiPlus } from "react-icons/fi";
 import { useAuth } from "../../contexts/AuthContext";
 import api from "../../services/api";
-
+import { useTranslation } from "react-i18next";
 type Price = {
   id: string;
   symbol: string;
@@ -21,7 +21,7 @@ const Watchlist = () => {
   const [watchlist, setWatchlist] = useState<Price[]>([]);
   const [isAdding, setIsAdding] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchCryptos = async () => {
       const response = await api.get("/allCryptos");
@@ -72,14 +72,14 @@ const Watchlist = () => {
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-colors duration-200">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white transition-colors duration-200">
-          My Watchlist
+          {t("myWatchlist")}
         </h2>
         {!isAdding ? (
           <button
             onClick={() => setIsAdding(true)}
             className="flex items-center gap-1 text-sm bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-3 py-1 rounded transition-colors duration-200"
           >
-            <FiPlus size={14} /> Add
+            <FiPlus size={14} /> {t("add")}
           </button>
         ) : (
           <button
@@ -89,7 +89,7 @@ const Watchlist = () => {
             }}
             className="text-sm bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-300 px-3 py-1 rounded transition-colors duration-200"
           >
-            Cancel
+            {t("cancel")}
           </button>
         )}
       </div>
@@ -98,7 +98,7 @@ const Watchlist = () => {
         <div className="mb-4">
           <input
             type="text"
-            placeholder="Search cryptocurrencies..."
+            placeholder={t("searchCryptocurrencies")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded 
@@ -134,7 +134,7 @@ const Watchlist = () => {
               ))
             ) : (
               <p className="p-2 text-gray-500 dark:text-gray-400">
-                No cryptocurrencies found
+                {t("noCryptocurrenciesFound")}
               </p>
             )}
           </div>
@@ -145,13 +145,13 @@ const Watchlist = () => {
         <div className="text-center py-8">
           <FiStar className="mx-auto text-gray-400 dark:text-gray-500 text-4xl mb-2" />
           <p className="text-gray-500 dark:text-gray-400">
-            Your watchlist is empty
+            {t("yourWatchlistIsEmpty")}
           </p>
           <button
             onClick={() => setIsAdding(true)}
             className="mt-2 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200"
           >
-            Add some cryptocurrencies
+            {t("addSomeCryptocurrencies")}
           </button>
         </div>
       ) : (
@@ -160,19 +160,19 @@ const Watchlist = () => {
             <thead className="bg-gray-50 dark:bg-gray-700/50">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Coin
+                  {t("coin")}
                 </th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Price
+                  {t("price")}
                 </th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  24h
+                  {t("24h")}
                 </th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Market Cap
+                  {t("marketCap")}
                 </th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Actions
+                  {t("actions")}
                 </th>
               </tr>
             </thead>
@@ -217,7 +217,7 @@ const Watchlist = () => {
                     <button
                       onClick={() => handleRemoveFromWatchlist(crypto.id)}
                       className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors duration-200"
-                      title="Remove from watchlist"
+                      title={t("removeFromWatchlist")}
                     >
                       <FiX size={18} />
                     </button>

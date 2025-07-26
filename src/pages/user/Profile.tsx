@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { GenericForm } from "../../components/GenericForm";
 import useToast from "../../hooks/useToast";
 import api from "../../services/api";
-
+import { useTranslation } from "react-i18next";
 type ProfileFormData = {
   username: string;
   email: string;
@@ -15,7 +15,7 @@ const Profile = () => {
     getCurrentUser,
   } = useAuth();
   const toast = useToast();
-
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<ProfileFormData>({
     username: user?.username || "",
@@ -58,14 +58,14 @@ const Profile = () => {
         <div className="p-8">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white transition-colors duration-200">
-              Profile Information
+              {t("profileInformation")}
             </h1>
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
                 className="px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200"
               >
-                Edit Profile
+                {t("editProfile")}
               </button>
             )}
           </div>
@@ -75,7 +75,7 @@ const Profile = () => {
               <GenericForm<ProfileFormData>
                 fields={profileFields}
                 onSubmit={handleSubmit}
-                submitButtonText="Save Changes"
+                submitButtonText={t("saveChanges")}
                 formClassName="space-y-4"
                 defaultValues={formData}
               />
@@ -90,7 +90,7 @@ const Profile = () => {
                   }}
                   className="w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200"
                 >
-                  Cancel
+                  {t("cancel")}
                 </button>
               </div>
             </>
@@ -98,7 +98,7 @@ const Profile = () => {
             <div className="space-y-4">
               <div>
                 <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200">
-                  Username
+                  {t("username")}
                 </h2>
                 <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-200">
                   {user?.username}
@@ -107,7 +107,7 @@ const Profile = () => {
 
               <div>
                 <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200">
-                  Email
+                  {t("email")}
                 </h2>
                 <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-200">
                   {user?.email}

@@ -1,9 +1,11 @@
 import { formatPercentage } from "../lib/formatters";
+import { useTranslation } from "react-i18next";
 interface TopMoversProps {
   data: any[];
 }
 
 const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
+  const { t } = useTranslation();
   if (!data.length) return null;
 
   const gainers = [...data]
@@ -26,7 +28,7 @@ const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
     <div className="space-y-4">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200">
         <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white transition-colors duration-200">
-          Top Gainers (24h)
+          {t("topGainers")} (24h)
         </h3>
         <div className="space-y-3">
           {gainers.map((coin) => (
@@ -59,7 +61,7 @@ const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200">
         <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white transition-colors duration-200">
-          Top Losers (24h)
+          {t("topLosers")} (24h)
         </h3>
         <div className="space-y-3">
           {losers.map((coin) => (
@@ -92,7 +94,7 @@ const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200">
         <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white transition-colors duration-200">
-          Most Traded
+          {t("mostTraded")}
         </h3>
         <div className="space-y-3">
           {mostTraded.map((coin) => (

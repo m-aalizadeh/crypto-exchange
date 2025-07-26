@@ -1,4 +1,5 @@
 import { cn } from "../lib/utils";
+import { useTranslation } from "react-i18next";
 
 export const LoadingSpinner = ({
   fullScreen = false,
@@ -9,6 +10,7 @@ export const LoadingSpinner = ({
   className?: string;
   size?: "small" | "default" | "large";
 }) => {
+  const { t } = useTranslation("translation");
   const sizeClasses = {
     small: "h-6 w-6 border-2",
     default: "h-12 w-12 border-[3px]",
@@ -35,7 +37,7 @@ export const LoadingSpinner = ({
         )}
         role="status"
       >
-        <span className="sr-only">Loading...</span>
+        <span className="sr-only">{t(`loading`)}</span>
       </div>
     </div>
   );
