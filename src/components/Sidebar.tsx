@@ -8,7 +8,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
-
+import { useTranslation } from "react-i18next";
 type SidebarProps = {
   isCollapsed: boolean;
   toggleCollapse: () => void;
@@ -16,22 +16,22 @@ type SidebarProps = {
 
 export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
   const { logout } = useAuth();
-
+  const { t } = useTranslation();
   const navItems = [
     {
       path: "/dashboard",
       icon: <LayoutDashboard className="w-5 h-5" />,
-      label: "Dashboard",
+      label: t("dashboard"),
     },
     {
       path: "/dashboard/watchlist",
       icon: <Folder className="w-5 h-5" />,
-      label: "Watchlist",
+      label: t("watchlist"),
     },
     {
       path: "/dashboard/profile",
       icon: <User className="w-5 h-5" />,
-      label: "Profile",
+      label: t("profile"),
     },
   ];
 
@@ -47,7 +47,7 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
         <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
           {!isCollapsed && (
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Panel
+              {t("panel")}
             </h1>
           )}
           <button
@@ -118,7 +118,7 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
           >
             <LogOut className="w-5 h-5" />
             {!isCollapsed && (
-              <span className="ml-3 text-sm font-medium">Logout</span>
+              <span className="ml-3 text-sm font-medium">{t("logout")}</span>
             )}
           </button>
         </div>

@@ -31,7 +31,7 @@ const Home = () => {
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
         <div className="p-6">
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
-            Top 100 Cryptocurrencies by Market Cap
+            {t("top100CryptocurrenciesByMarketCap")}
           </h2>
           <CryptocurrencyTable pageSize={10} data={prices} />
         </div>

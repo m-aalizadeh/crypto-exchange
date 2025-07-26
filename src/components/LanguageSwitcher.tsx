@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
 
 const LanguageSwitcher = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const languages = [
-    { code: "en", name: "English" },
-    { code: "fa", name: "Persian" },
+    { code: "en", name: t("english") },
+    { code: "fa", name: t("persian") },
   ];
 
   return (

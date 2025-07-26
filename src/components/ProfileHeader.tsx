@@ -2,7 +2,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { Menu, Search, Bell } from "lucide-react";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import DarkModeToggle from "../components/DarkModeToggle";
-
+import { useTranslation } from "react-i18next";
 type HeaderProps = {
   toggleSidebar: () => void;
   isSidebarCollapsed: boolean;
@@ -12,7 +12,7 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
   const {
     state: { user },
   } = useAuth();
-
+  const { t } = useTranslation("translation");
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
       <div className="flex items-center justify-between px-4 py-3 sm:px-6">
@@ -25,7 +25,7 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
               focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400
               transition-colors duration-200"
             aria-label={
-              isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
+              isSidebarCollapsed ? t(`expandSidebar`) : t(`collapseSidebar`)
             }
           >
             <Menu className="w-5 h-5" />
@@ -40,7 +40,7 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
             </div>
             <input
               type="text"
-              placeholder="Search"
+              placeholder={t(`search`)}
               className="block w-full pl-10 pr-3 py-2 
                 border border-gray-300 dark:border-gray-600 
                 rounded-md leading-5 
@@ -64,14 +64,14 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
               focus:ring-indigo-500 dark:focus:ring-indigo-400
               transition-colors duration-200"
           >
-            <span className="sr-only">View notifications</span>
+            <span className="sr-only">{t(`viewNotifications`)}</span>
             <div className="relative">
               <Bell className="w-5 h-5" />
               <span
                 className="absolute top-0 right-0 block h-2 w-2 rounded-full 
                 bg-red-400 dark:bg-red-500 
                 ring-2 ring-white dark:ring-gray-800"
-              ></span>
+              />
             </div>
           </button>
           <div className="relative ml-3">
@@ -92,7 +92,7 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
                 aria-expanded="false"
                 aria-haspopup="true"
               >
-                <span className="sr-only">Open user menu</span>
+                <span className="sr-only">{t(`openUserMenu`)}</span>
                 <div
                   className="h-8 w-8 rounded-full 
                   bg-indigo-600 dark:bg-indigo-500 

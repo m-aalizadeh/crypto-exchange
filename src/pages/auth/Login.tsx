@@ -1,6 +1,6 @@
 import { useAuth } from "../../contexts/AuthContext";
 import { GenericForm } from "../../components/GenericForm";
-
+import { useTranslation } from "react-i18next";
 type LoginFormData = {
   username: string;
   password: string;
@@ -8,7 +8,7 @@ type LoginFormData = {
 
 export const Login = () => {
   const { login } = useAuth();
-
+  const { t } = useTranslation();
   const onSubmit = async (data: LoginFormData) => {
     try {
       await login(data.username, data.password);
@@ -21,7 +21,7 @@ export const Login = () => {
     {
       name: "username",
       type: "text",
-      label: "Username",
+      label: t("username"),
       autoComplete: "username",
       required: true,
       icon: "Mail" as const,
@@ -29,7 +29,7 @@ export const Login = () => {
     {
       name: "password",
       type: "password",
-      label: "Password",
+      label: t("password"),
       autoComplete: "current-password",
       required: true,
       icon: "Lock" as const,
@@ -40,7 +40,7 @@ export const Login = () => {
     <GenericForm<LoginFormData>
       fields={loginFields}
       onSubmit={onSubmit}
-      submitButtonText="Sign in"
+      submitButtonText={t("signIn")}
       showRememberMe={true}
     />
   );

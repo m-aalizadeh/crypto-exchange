@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import type { User } from "../types/user";
 import { Socket } from "socket.io-client";
-
+import { useTranslation } from "react-i18next";
 interface Message {
   sender: string;
   content: string;
@@ -24,6 +24,7 @@ const ChatWidget = ({
   onClose,
   onOpen,
 }: ChatProps) => {
+  const { t } = useTranslation("translation");
   const {
     state: { user: currentUser },
   } = useAuth();
@@ -125,10 +126,11 @@ const ChatWidget = ({
 
   return (
     <div className="fixed bottom-0 right-0 w-[400px] bg-white shadow-lg flex flex-col h-[450px] z-50">
-      {/* Header */}
       <div className="px-4 py-2 bg-blue-500 text-white flex justify-between items-center">
         <h3 className="font-medium text-base">
-          {activeRecipient ? `Chat with ${activeRecipient.username}` : "Chat"}
+          {activeRecipient
+            ? t(`chatWith`, { username: activeRecipient.username })
+            : t("chat")}
         </h3>
         <div className="flex items-center space-x-2">
           <button
@@ -152,10 +154,11 @@ const ChatWidget = ({
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Users List */}
         <div className="w-[140px] border-r border-gray-200 bg-white flex flex-col">
           <div className="p-2 border-b border-gray-200">
-            <h4 className="text-sm font-medium text-gray-700">Online Users</h4>
+            <h4 className="text-sm font-medium text-gray-700">
+              {t("onlineUsers")}
+            </h4>
           </div>
           <div className="overflow-y-auto flex-1">
             {filteredOnlineUsers.map((user) => (
@@ -177,8 +180,8 @@ const ChatWidget = ({
                       {user.username}
                     </div>
                     <div className="text-xs text-green-500 flex items-center">
-                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1"></span>
-                      Online
+                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1" />
+                      {t("online")}
                     </div>
                   </div>
                 </div>
@@ -186,8 +189,6 @@ const ChatWidget = ({
             ))}
           </div>
         </div>
-
-        {/* Chat Area */}
         <div className="flex-1 flex flex-col bg-white">
           {activeRecipient ? (
             <>
@@ -234,7 +235,7 @@ const ChatWidget = ({
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && sendMessage()}
                     className="flex-1 text-sm border border-gray-300 rounded px-3 py-1 focus:outline-none focus:border-blue-500"
-                    placeholder="Type a message..."
+                    placeholder={t("typeMessage")}
                   />
                   <button
                     onClick={sendMessage}
@@ -269,7 +270,7 @@ const ChatWidget = ({
                     d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                   />
                 </svg>
-                <p className="text-sm">Select a user to start chatting</p>
+                <p className="text-sm">{t("selectUserToChat")}</p>
               </div>
             </div>
           )}

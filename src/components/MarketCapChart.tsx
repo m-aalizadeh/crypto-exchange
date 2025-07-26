@@ -2,7 +2,7 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { formatCurrency } from "../lib/formatters";
 import { useEffect, useState } from "react";
-
+import { useTranslation } from "react-i18next";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface MarketCapChartProps {
@@ -11,7 +11,7 @@ interface MarketCapChartProps {
 
 const MarketCapChart: React.FC<MarketCapChartProps> = ({ data }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-
+  const { t } = useTranslation("translation");
   useEffect(() => {
     // Initial check for dark mode
     const isDark = document.documentElement.classList.contains("dark");
@@ -109,7 +109,7 @@ const MarketCapChart: React.FC<MarketCapChartProps> = ({ data }) => {
   return (
     <div className="h-full bg-white dark:bg-gray-800 rounded-lg p-4 transition-colors duration-200">
       <h3 className="text-lg font-semibold mb-4 text-center text-gray-900 dark:text-white transition-colors duration-200">
-        Market Cap Distribution
+        {t(`marketCapDistribution`)}
       </h3>
       <div className="h-80">
         <Pie data={chartData} options={options} />
