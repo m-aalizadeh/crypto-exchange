@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@material/react-dialog": "^0.15.0",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.9.0",
     "chart.js": "^4.4.9",
