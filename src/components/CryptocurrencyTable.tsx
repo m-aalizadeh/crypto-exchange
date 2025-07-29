@@ -14,6 +14,7 @@ import {
   formatNumber,
 } from "../lib/formatters";
 import { useTranslation } from "react-i18next";
+import CoinChartModal from "./CoinChartModal";
 
 interface Cryptocurrency {
   id: string;
@@ -57,6 +58,8 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
 }) => {
   const [currentPageSize, setCurrentPageSize] = useState(pageSize);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCoinId, setSelectedCoinId] = useState<string | null>(null);
   const { t } = useTranslation("translation");
 
   const filteredData = useMemo(() => {
@@ -272,7 +275,11 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
                 return (
                   <tr
                     {...row.getRowProps()}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200"
+                    onClick={() => {
+                      setSelectedCoinId(row.original.id);
+                      setIsModalOpen(true);
+                    }}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer"
                   >
                     {row.cells.map((cell) => (
                       <td
@@ -418,6 +425,11 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
           </button>
         </div>
       </div>
+      <CoinChartModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        coinId={selectedCoinId}
+      />
     </div>
   );
 };

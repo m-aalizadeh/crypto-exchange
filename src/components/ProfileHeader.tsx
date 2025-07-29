@@ -1,9 +1,9 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Menu } from "lucide-react";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import DarkModeToggle from "../components/DarkModeToggle";
-import CameraModal from "./cameraModal";
+import CameraModal from "./CameraModal";
 import Avatar from "./Avatar";
 import { useTranslation } from "react-i18next";
 import api from "../services/api";
