@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteCookie, setCookie } from "../services/cookieUtils";
+import { deleteCookie } from "../services/cookieUtils";
 import useToast from "../hooks/useToast";
 import api from "../services/api";
 

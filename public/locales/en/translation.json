@@ -61,5 +61,6 @@
   "pageNotFound": "The page you're looking for doesn't exist or has been moved.",
   "goToHomepage": "Go to Homepage",
   "english": "English",
-  "persian": "Persian"
+  "persian": "Persian",
+  "admin": "Admin"
 }

@@ -8,6 +8,7 @@ import { Login } from "./pages/auth/Login";
 import { Register } from "./pages/auth/Registration";
 import { Dashboard } from "./pages/user/Dashboard";
 import Profile from "./pages/user/Profile";
+import AdminPanel from "./pages/user/AdminPanel";
 import { HomeWrapper } from "./pages/HomeWrapper";
 import Watchlist from "./pages/user/Watchlist";
 import { LoadingSpinner } from "./components/LoadingSpinner";
@@ -29,6 +30,7 @@ export const AppRoutes = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/profile" element={<Profile />} />
             <Route path="/dashboard/watchlist" element={<Watchlist />} />
+            <Route path="/dashboard/admin" element={<AdminPanel />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

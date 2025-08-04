@@ -6,6 +6,7 @@ import {
   Folder,
   User,
   LogOut,
+  Shield,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
@@ -32,6 +33,11 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
       path: "/dashboard/profile",
       icon: <User className="w-5 h-5" />,
       label: t("profile"),
+    },
+    {
+      path: "/dashboard/admin",
+      icon: <Shield className="w-5 h-5" />,
+      label: t("admin"),
     },
   ];
 
