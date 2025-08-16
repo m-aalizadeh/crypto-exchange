@@ -41,7 +41,6 @@ export const Login = () => {
       fields={loginFields}
       onSubmit={onSubmit}
       submitButtonText={t("signIn")}
-      showRememberMe={true}
     />
   );
 };

@@ -36,7 +36,6 @@ export const GenericForm = <T extends FieldValues>({
   defaultValues,
   submitButtonText = "Submit",
   formClassName = "space-y-6",
-  showRememberMe = false,
 }: GenericFormProps<T>) => {
   const {
     register,
@@ -101,30 +100,6 @@ export const GenericForm = <T extends FieldValues>({
           </div>
         );
       })}
-
-      {showRememberMe && (
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <input
-              id="remember-me"
-              name="remember-me"
-              type="checkbox"
-              className="h-4 w-4 text-indigo-600 dark:text-indigo-500 
-                focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                border-gray-300 dark:border-gray-600 
-                bg-white dark:bg-gray-700
-                rounded transition-colors duration-200"
-            />
-            <label
-              htmlFor="remember-me"
-              className="ml-2 block text-sm text-gray-900 dark:text-gray-300 transition-colors duration-200"
-            >
-              Remember me
-            </label>
-          </div>
-        </div>
-      )}
-
       <div>
         <Button type="submit" className="w-full">
           {submitButtonText}
