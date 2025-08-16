@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteCookie } from "../services/cookieUtils";
 import useToast from "../hooks/useToast";
 import api from "../services/api";
+import type { ApiResponse } from "../types/api";
 
 type User = {
   _id: string;
@@ -70,17 +71,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (username: string, password: string) => {
     dispatch({ type: "AUTH_REQUEST" });
     try {
-      const response = await api.post("/user/signin", { username, password });
-      if (response.data) {
-        const { token, user } = response.data;
-        localStorage.setItem("token", token);
+      const { data } = await api.post<ApiResponse<User>>("/user/signin", {
+        username,
+        password,
+      });
+
+      if (data.status === "success") {
+        if (!data.token || !data.user) {
+          throw new Error("Invalid response format: missing token or user");
+        }
+
+        localStorage.setItem("token", data.token);
         toast.showSuccess("Login successful");
-        dispatch({ type: "AUTH_SUCCESS", payload: user });
+        dispatch({ type: "AUTH_SUCCESS", payload: data.user });
         navigate("/dashboard");
+      } else {
+        const errorMsg = data.message || "Login failed";
+        toast.showError(errorMsg);
+        dispatch({ type: "AUTH_FAILURE", payload: errorMsg });
       }
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Login failed";
-      toast.showError(errorMessage);
+    } catch (error: unknown) {
+      let errorMessage = "Login failed";
+
+      if (typeof error === "object" && error !== null) {
+        const apiError = error as {
+          message?: string;
+          validationErrors?: Array<{ message: string }>;
+        };
+
+        errorMessage = apiError.message || errorMessage;
+
+        if (apiError.validationErrors?.length) {
+          apiError.validationErrors.forEach((err) => {
+            toast.showError(err.message);
+          });
+        } else {
+          toast.showError(errorMessage);
+        }
+      } else {
+        toast.showError(errorMessage);
+      }
+
       dispatch({ type: "AUTH_FAILURE", payload: errorMessage });
     }
   };
@@ -92,22 +123,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   ) => {
     dispatch({ type: "AUTH_REQUEST" });
     try {
-      const response = await api.post("/user/signup", {
+      const { data } = await api.post<ApiResponse<User>>("/user/signup", {
         username,
         email,
         password,
       });
-      if (response.data) {
-        const { token, user } = response.data;
-        localStorage.setItem("token", token);
+      if (data.status === "success") {
+        if (!data.token || !data.user) {
+          throw new Error("Invalid response format: missing token or user");
+        }
+
+        localStorage.setItem("token", data.token);
         toast.showSuccess("Registration successful");
-        dispatch({ type: "AUTH_SUCCESS", payload: user });
+        dispatch({ type: "AUTH_SUCCESS", payload: data.user });
         navigate("/dashboard");
+      } else {
+        const errorMsg = data.message || "Registration failed";
+        toast.showError(errorMsg);
+        dispatch({ type: "AUTH_FAILURE", payload: errorMsg });
       }
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message || "Registration failed";
-      toast.showError(errorMessage);
+    } catch (error: unknown) {
+      let errorMessage = "Login failed";
+
+      if (typeof error === "object" && error !== null) {
+        const apiError = error as {
+          message?: string;
+          validationErrors?: Array<{ message: string }>;
+        };
+
+        errorMessage = apiError.message || errorMessage;
+
+        if (apiError.validationErrors?.length) {
+          apiError.validationErrors.forEach((err) => {
+            toast.showError(err.message);
+          });
+        } else {
+          toast.showError(errorMessage);
+        }
+      } else {
+        toast.showError(errorMessage);
+      }
+
       dispatch({ type: "AUTH_FAILURE", payload: errorMessage });
     }
   };
@@ -115,8 +171,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const getCurrentUser = async () => {
     dispatch({ type: "AUTH_REQUEST" });
     try {
-      const response = await api.get("/user/currentUser");
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
+      const { data } = await api.get<ApiResponse<User>>("/user/currentUser");
+      if (data.status === "success" && data.user) {
+        dispatch({ type: "AUTH_SUCCESS", payload: data.user });
+      } else {
+        throw new Error(data.message || "Failed to get current user");
+      }
     } catch (error) {
       dispatch({ type: "AUTH_FAILURE", payload: "Token got expired" });
     }

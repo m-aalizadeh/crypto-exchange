@@ -6,6 +6,7 @@ import DarkModeToggle from "../components/DarkModeToggle";
 import CameraModal from "./CameraModal";
 import Avatar from "./Avatar";
 import { useTranslation } from "react-i18next";
+import type { FileResponse } from "../types/api";
 import api from "../services/api";
 
 type HeaderProps = {
@@ -31,15 +32,48 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
   };
 
   const getPhoto = async () => {
+    if (!user?._id) {
+      console.error("User ID is missing");
+      return;
+    }
+
     try {
-      const response = await api.get(`/files/getFile/${user?._id}`);
-      const uint8Array = new Uint8Array(response?.data?.data);
-      const base64String = btoa(String.fromCharCode(...uint8Array));
-      const imageType = "image/jpeg";
-      const dataUrl = `data:${imageType};base64,${base64String}`;
-      onCapture(dataUrl);
-    } catch (err) {
-      console.error("Failed to fetch image", err);
+      const { data } = await api.get<FileResponse>(
+        `/files/getFile/${user._id}`
+      );
+      if (data.status === "success" && data.file?.data) {
+        const uint8Array = new Uint8Array(data.file.data);
+        const base64String = btoa(
+          String.fromCharCode.apply(null, Array.from(uint8Array))
+        );
+        const imageType = "image/jpeg";
+        const dataUrl = `data:${imageType};base64,${base64String}`;
+
+        onCapture(dataUrl);
+      } else {
+        const errorMsg = data.message || "Image data not available";
+        console.error(errorMsg);
+      }
+    } catch (error: unknown) {
+      let errorMessage = "Failed to fetch image";
+      if (typeof error === "object" && error !== null) {
+        const apiError = error as {
+          message?: string;
+          validationErrors?: Array<{ message: string }>;
+        };
+
+        errorMessage = apiError.message || errorMessage;
+
+        if (apiError.validationErrors?.length) {
+          apiError.validationErrors.forEach((err) => {
+            console.error(err.message);
+          });
+        } else {
+          console.error(errorMessage);
+        }
+      } else {
+        console.error(errorMessage);
+      }
     }
   };
 
