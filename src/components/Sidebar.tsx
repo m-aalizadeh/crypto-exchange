@@ -16,7 +16,10 @@ type SidebarProps = {
 };
 
 export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
-  const { logout } = useAuth();
+  const {
+    logout,
+    state: { user },
+  } = useAuth();
   const { t } = useTranslation();
   const navItems = [
     {
@@ -38,6 +41,7 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
       path: "/dashboard/admin",
       icon: <Shield className="w-5 h-5" />,
       label: t("admin"),
+      visible: user?.role === "admin",
     },
   ];
 
@@ -76,12 +80,14 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
         </div>
         <nav className="flex-1 overflow-y-auto">
           <ul className="space-y-1 p-2">
-            {navItems.map((item) => (
-              <li key={item.path}>
-                <NavLink to={item.path}>
-                  {({ isActive }: { isActive: boolean }) => (
-                    <div
-                      className={`flex items-center p-3 rounded-md
+            {navItems.map(({ path, icon, label, visible = true }) => {
+              if (visible) {
+                return (
+                  <li key={path}>
+                    <NavLink to={path}>
+                      {({ isActive }: { isActive: boolean }) => (
+                        <div
+                          className={`flex items-center p-3 rounded-md
                       text-gray-700 dark:text-gray-300
                       hover:text-gray-900 dark:hover:text-white
                       hover:bg-gray-100 dark:hover:bg-gray-700
@@ -92,24 +98,28 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
                       } 
                       ${isCollapsed ? "justify-center" : ""}
                       transition-colors duration-200`}
-                    >
-                      <div
-                        className={
-                          isActive ? "text-indigo-600 dark:text-indigo-400" : ""
-                        }
-                      >
-                        {item.icon}
-                      </div>
-                      {!isCollapsed && (
-                        <span className="ml-3 text-sm font-medium">
-                          {item.label}
-                        </span>
+                        >
+                          <div
+                            className={
+                              isActive
+                                ? "text-indigo-600 dark:text-indigo-400"
+                                : ""
+                            }
+                          >
+                            {icon}
+                          </div>
+                          {!isCollapsed && (
+                            <span className="ml-3 text-sm font-medium">
+                              {label}
+                            </span>
+                          )}
+                        </div>
                       )}
-                    </div>
-                  )}
-                </NavLink>
-              </li>
-            ))}
+                    </NavLink>
+                  </li>
+                );
+              }
+            })}
           </ul>
         </nav>
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">

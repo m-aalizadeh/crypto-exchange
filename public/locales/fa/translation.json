@@ -68,5 +68,7 @@
   "english": "انگلیسی",
   "persian": "فارسی",
   "admin": "مدیر",
-  "adminPanel": "پنل مدیریت"
+  "adminPanel": "پنل مدیریت",
+  "role": "نقش",
+  "status": "حالت"
 }

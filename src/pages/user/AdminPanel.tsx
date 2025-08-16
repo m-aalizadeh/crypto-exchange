@@ -3,7 +3,7 @@ import api from "../../services/api";
 import GenericTable from "../../components/GenericTable";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { useTranslation } from "react-i18next";
-import { Pencil, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Tooltip } from "@material-tailwind/react";
 import useToast from "../../hooks/useToast";
 import { useAuth } from "../../contexts/AuthContext";
@@ -44,10 +44,6 @@ const AdminPanel: React.FC = () => {
 
     fetchUsers();
   }, []);
-
-  const handleEdit = (user: User) => {
-    console.log("Edit user:", user);
-  };
 
   const handleDelete = async () => {
     try {
@@ -107,19 +103,8 @@ const AdminPanel: React.FC = () => {
       key: "actions" as const,
       header: "Actions",
       align: "right",
-      render: (_, row) => (
+      render: (_: unknown, row: User) => (
         <div className="flex justify-end space-x-2">
-          <Tooltip content={t(`Edit`)}>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleEdit(row.id);
-              }}
-              className="text-indigo-600 hover:text-indigo-900"
-            >
-              <Pencil />
-            </button>
-          </Tooltip>
           <Tooltip content={t(`Delete`)}>
             <button
               onClick={() => handleConfirmationModal(row)}

@@ -69,7 +69,6 @@ const Profile = () => {
               </button>
             )}
           </div>
-
           {isEditing ? (
             <>
               <GenericForm<ProfileFormData>
@@ -104,13 +103,28 @@ const Profile = () => {
                   {user?.username}
                 </p>
               </div>
-
               <div>
                 <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200">
                   {t("email")}
                 </h2>
                 <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-200">
                   {user?.email}
+                </p>
+              </div>
+              <div>
+                <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200">
+                  {t("role")}
+                </h2>
+                <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-200">
+                  {user?.role}
+                </p>
+              </div>
+              <div>
+                <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200">
+                  {t("status")}
+                </h2>
+                <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-200">
+                  {user?.status}
                 </p>
               </div>
             </div>

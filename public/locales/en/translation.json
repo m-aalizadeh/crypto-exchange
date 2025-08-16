@@ -62,5 +62,7 @@
   "goToHomepage": "Go to Homepage",
   "english": "English",
   "persian": "Persian",
-  "admin": "Admin"
+  "admin": "Admin",
+  "role": "Role",
+  "status": "Status"
 }
