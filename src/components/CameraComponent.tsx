@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import api from "../services/api";
+import { apiCall } from "../services/api";
 
 interface CameraComponentProps {
   capturedImage: string | null;
@@ -72,7 +72,7 @@ const CameraComponent = ({
         const blob = await res.blob();
         const formData = new FormData();
         formData.append("file", blob, "photo.jpg");
-        await api.post(`/files/uploadFile/${user?._id}`, formData);
+        await apiCall("POST", `/files/uploadFile/${user?._id}`, formData);
         onCapture(imageDataUrl);
       } catch (err) {
         console.error("Upload failed", err);

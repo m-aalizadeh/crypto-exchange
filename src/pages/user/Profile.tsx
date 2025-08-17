@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { GenericForm } from "../../components/GenericForm";
 import useToast from "../../hooks/useToast";
-import api from "../../services/api";
+import { apiCall } from "../../services/api";
 import { useTranslation } from "react-i18next";
+import type { ApiResponse } from "../../types/api";
+
 type ProfileFormData = {
   username: string;
   email: string;
@@ -26,8 +28,12 @@ const Profile = () => {
     setFormData(data);
     setIsEditing(false);
     try {
-      const response = await api.patch(`/user/updateUser/${user?._id}`, data);
-      if (response.data) {
+      const response = await apiCall<ApiResponse>(
+        "PATCH",
+        `/user/updateUser/${user?._id}`,
+        data
+      );
+      if (response.status === "success" && response.data) {
         toast.showSuccess("Profile updated successfully");
         await getCurrentUser();
       }

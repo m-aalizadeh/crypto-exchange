@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { FiStar, FiX, FiPlus } from "react-icons/fi";
 import { useAuth } from "../../contexts/AuthContext";
-import api from "../../services/api";
+import { apiCall } from "../../services/api";
 import { useTranslation } from "react-i18next";
+import useToast from "../../hooks/useToast";
+import type { ApiResponse } from "../../types/api";
+
 type Price = {
   id: string;
   symbol: string;
@@ -21,18 +24,22 @@ const Watchlist = () => {
   const [watchlist, setWatchlist] = useState<Price[]>([]);
   const [isAdding, setIsAdding] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const toast = useToast();
   const { t } = useTranslation();
   useEffect(() => {
     const fetchCryptos = async () => {
-      const response = await api.get("/allCryptos");
-      if (Array.isArray(response.data) && response.data.length > 0) {
-        setAllCryptos(response.data);
+      const response = await apiCall<ApiResponse>("GET", "/allCryptos");
+      if (response.status === "success" && response.coins) {
+        setAllCryptos(response.coins);
       }
     };
     const fetchWatchlist = async () => {
-      const response = await api.get(`/watchlist/${user?._id}`);
-      if (Array.isArray(response.data) && response.data.length > 0) {
-        setWatchlist(response.data);
+      const response = await apiCall<ApiResponse>(
+        "GET",
+        `/watchlist/${user?._id}`
+      );
+      if (response.status === "success" && response.watchList) {
+        setWatchlist(response.watchList);
       }
     };
     fetchWatchlist();
@@ -52,7 +59,7 @@ const Watchlist = () => {
       return;
     }
     setWatchlist([...watchlist, coinData]);
-    await api.post("/watchlist/addWatchlist", {
+    await apiCall<ApiResponse>("POST", "/watchlist/addWatchlist", {
       userId: user?._id,
       coinData,
     });
@@ -62,10 +69,13 @@ const Watchlist = () => {
 
   const handleRemoveFromWatchlist = async (coinId: string) => {
     setWatchlist(watchlist.filter((item) => item.id !== coinId));
-    // await api.delete("/watchlist/removeFromWatchlist", {
-    //   coinId,
-    //   userId: user?._id,
-    // });
+    const response = await apiCall<ApiResponse>(
+      "DELETE",
+      `/watchlist/removeFromWatchlist?userId=${user?._id}&coinId=${coinId}`
+    );
+    if (response.status === "success") {
+      toast.showSuccess(response.message);
+    }
   };
 
   return (

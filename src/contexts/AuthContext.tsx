@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteCookie } from "../services/cookieUtils";
 import useToast from "../hooks/useToast";
-import api from "../services/api";
+import { apiCall } from "../services/api";
 import type { ApiResponse } from "../types/api";
 
 type User = {
@@ -71,22 +71,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (username: string, password: string) => {
     dispatch({ type: "AUTH_REQUEST" });
     try {
-      const { data } = await api.post<ApiResponse<User>>("/user/signin", {
+      const result = await apiCall<ApiResponse>("POST", "/user/signin", {
         username,
         password,
       });
 
-      if (data.status === "success") {
-        if (!data.token || !data.user) {
+      if (result.status === "success") {
+        if (!result.token || !result.user) {
           throw new Error("Invalid response format: missing token or user");
         }
 
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", result.token);
         toast.showSuccess("Login successful");
-        dispatch({ type: "AUTH_SUCCESS", payload: data.user });
+        dispatch({ type: "AUTH_SUCCESS", payload: result.user });
         navigate("/dashboard");
       } else {
-        const errorMsg = data.message || "Login failed";
+        const errorMsg = result.message || "Login failed";
         toast.showError(errorMsg);
         dispatch({ type: "AUTH_FAILURE", payload: errorMsg });
       }
@@ -123,7 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   ) => {
     dispatch({ type: "AUTH_REQUEST" });
     try {
-      const { data } = await api.post<ApiResponse<User>>("/user/signup", {
+      const data = await apiCall<ApiResponse>("POST", "/user/signup", {
         username,
         email,
         password,
@@ -171,11 +171,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const getCurrentUser = async () => {
     dispatch({ type: "AUTH_REQUEST" });
     try {
-      const { data } = await api.get<ApiResponse<User>>("/user/currentUser");
-      if (data.status === "success" && data.user) {
-        dispatch({ type: "AUTH_SUCCESS", payload: data.user });
+      const response = await apiCall<ApiResponse>("GET", "/user/currentUser");
+      if (response.status === "success" && response.user) {
+        dispatch({ type: "AUTH_SUCCESS", payload: response.user });
       } else {
-        throw new Error(data.message || "Failed to get current user");
+        throw new Error(response.message || "Failed to get current user");
       }
     } catch (error) {
       dispatch({ type: "AUTH_FAILURE", payload: "Token got expired" });
@@ -184,7 +184,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = async () => {
     try {
-      await api.get("/user/logout");
+      await apiCall("GET", "/user/logout");
+      localStorage.clear();
     } finally {
       deleteCookie("token");
       dispatch({ type: "AUTH_LOGOUT" });

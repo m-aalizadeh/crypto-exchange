@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import api from "../../services/api";
+import { apiCall } from "../../services/api";
 import GenericTable from "../../components/GenericTable";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,7 @@ import { Trash2 } from "lucide-react";
 import { Tooltip } from "@material-tailwind/react";
 import useToast from "../../hooks/useToast";
 import { useAuth } from "../../contexts/AuthContext";
+import type { ApiResponse } from "../../types/api";
 interface User {
   _id: string;
   username: string;
@@ -31,9 +32,9 @@ const AdminPanel: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await api.get("/user/allUsers");
-        if (Array.isArray(response.data.users) && response.data.users.length) {
-          setUsers(response.data.users);
+        const response = await apiCall<ApiResponse>("GET", "/user/allUsers");
+        if (response.status === "success") {
+          setUsers(response.users);
         }
       } catch (err) {
         console.error(err);
@@ -47,14 +48,15 @@ const AdminPanel: React.FC = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await api.delete(
+      const response = await apiCall<ApiResponse>(
+        "DELETE",
         `/user/deleteUser/${selectedUser?._id}`
       );
       if (response.status === "success") {
         toast.showSuccess("User deleted successfully");
       }
-    } catch (err) {
-      const errorMessage = response?.message || t(`Something went wrong!`);
+    } catch (err: any) {
+      const errorMessage = err?.message || t(`Something went wrong!`);
       toast.showError(errorMessage);
     } finally {
       setIsOpen(false);

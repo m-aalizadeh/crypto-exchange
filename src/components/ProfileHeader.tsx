@@ -7,7 +7,7 @@ import CameraModal from "./CameraModal";
 import Avatar from "./Avatar";
 import { useTranslation } from "react-i18next";
 import type { FileResponse } from "../types/api";
-import api from "../services/api";
+import { apiCall } from "../services/api";
 
 type HeaderProps = {
   toggleSidebar: () => void;
@@ -38,11 +38,12 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
     }
 
     try {
-      const { data } = await api.get<FileResponse>(
+      const response = await apiCall<FileResponse>(
+        "GET",
         `/files/getFile/${user._id}`
       );
-      if (data.status === "success" && data.file?.data) {
-        const uint8Array = new Uint8Array(data.file.data);
+      if (response.status === "success" && response.file?.data) {
+        const uint8Array = new Uint8Array(response.file.data);
         const base64String = btoa(
           String.fromCharCode.apply(null, Array.from(uint8Array))
         );
@@ -51,7 +52,7 @@ export const Header = ({ toggleSidebar, isSidebarCollapsed }: HeaderProps) => {
 
         onCapture(dataUrl);
       } else {
-        const errorMsg = data.message || "Image data not available";
+        const errorMsg = response.message || "Image data not available";
         console.error(errorMsg);
       }
     } catch (error: unknown) {

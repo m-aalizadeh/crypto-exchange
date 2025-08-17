@@ -1,6 +1,6 @@
 export interface ApiResponse<T = any> {
   status: "success" | "error";
-  message?: string;
+  message: string;
   [key: string]: any;
   token?: string;
   validationErrors?: Array<{ [key: string]: string }>;
