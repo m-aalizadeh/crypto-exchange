@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -33,6 +34,7 @@ const CoinChartModal: React.FC<CoinChartModalProps> = ({
   onClose,
   coinId,
 }) => {
+  const { t } = useTranslation();
   const [chartData, setChartData] = useState<[number, number][] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,14 +54,10 @@ const CoinChartModal: React.FC<CoinChartModalProps> = ({
         const response = await fetch(
           `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=30&interval=daily`
         );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
         const data = await response.json();
         setChartData(data.prices);
       } catch (err) {
-        setError("Failed to fetch chart data. Please try again.");
-        console.error("Error fetching chart data:", err);
+        t("Failed to fetch chart data. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -92,7 +90,7 @@ const CoinChartModal: React.FC<CoinChartModalProps> = ({
           </svg>
         </button>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 capitalize">
-          {coinId} Price Chart (Last 30 Days)
+          {coinId} t("Price Chart (Last 30 Days)")
         </h2>
         {loading && (
           <div className="flex justify-center items-center h-48">
@@ -152,13 +150,14 @@ const CoinChartModal: React.FC<CoinChartModalProps> = ({
               />
             </div>
             <p className="text-gray-700 dark:text-gray-300 mt-4 text-center">
-              Data from CoinGecko. Chart displays last 30 days of daily data.
+              t("Data from CoinGecko. Chart displays last 30 days of daily
+              data.")
             </p>
           </div>
         )}
         {chartData && chartData.length === 0 && !loading && !error && (
           <div className="text-gray-500 dark:text-gray-400 text-center py-4">
-            No chart data available for {coinId}.
+            t("No chart data available for") {coinId}.
           </div>
         )}
       </div>

@@ -1,7 +1,10 @@
 import { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { apiCall } from "../services/api";
-
+import { useTranslation } from "react-i18next";
+import useToast from "../hooks/useToast";
+import type { ApiResponse } from "../types/api";
+import CircularProgress from "./CircularProgress";
 interface CameraComponentProps {
   capturedImage: string | null;
   onCapture: (imageData: string) => void;
@@ -16,6 +19,8 @@ const CameraComponent = ({
   const {
     state: { user },
   } = useAuth();
+  const { t } = useTranslation("translation");
+  const toast = useToast();
   const videoRef = useRef<HTMLVideoElement>(null);
   const photoRef = useRef<HTMLCanvasElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -36,8 +41,7 @@ const CameraComponent = ({
       setStream(mediaStream);
       setError(null);
     } catch (error) {
-      setError("Could not access the camera. Please check permission");
-      console.error("Camera error:", error);
+      setError(t("Could not access the camera. Please check permission"));
     }
   };
 
@@ -72,10 +76,17 @@ const CameraComponent = ({
         const blob = await res.blob();
         const formData = new FormData();
         formData.append("file", blob, "photo.jpg");
-        await apiCall("POST", `/files/uploadFile/${user?._id}`, formData);
+        const response = await apiCall<ApiResponse>(
+          "POST",
+          `/files/uploadFile/${user?._id}`,
+          formData
+        );
+        if (response.status === "success") {
+          toast.showSuccess(response.message);
+        }
         onCapture(imageDataUrl);
       } catch (err) {
-        console.error("Upload failed", err);
+        toast.showError(t("Upload Failed"));
       }
       stopCamera();
     }
@@ -104,9 +115,12 @@ const CameraComponent = ({
             className="w-full h-full object-cover"
           />
           {!stream && (
-            <div className="absolute inset-0 flex items-center justify-center text-white">
-              Camera loading...
-            </div>
+            <CircularProgress
+              progress={70}
+              size={10}
+              strokeWidth={2}
+              className="text-white"
+            />
           )}
         </div>
       ) : (
@@ -130,7 +144,7 @@ const CameraComponent = ({
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >
-            Capture
+            t("Capture")
           </button>
         ) : (
           <>
@@ -138,13 +152,13 @@ const CameraComponent = ({
               onClick={onRetake}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
             >
-              Retake
+              t("Retake")
             </button>
             <button
               onClick={downloadPhoto}
               className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition"
             >
-              Download
+              t("Download")
             </button>
           </>
         )}

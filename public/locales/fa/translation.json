@@ -70,5 +70,18 @@
   "admin": "مدیر",
   "adminPanel": "پنل مدیریت",
   "role": "نقش",
-  "status": "حالت"
+  "status": "حالت",
+  "Take Photo": "گرفتن عکس",
+  "Upload Image": "بارگذاری تصویر",
+  "Click to select image": "برای انتخاب تصویر کلیک کنید",
+  "Browse Files": "انتخاب فایل‌ها",
+  "Upload Different Image": "بارگذاری تصویر دیگر",
+  "Close": "بستن",
+  "Price Chart (Last 30 Days)": "نمودار قیمت (۳۰ روز گذشته)",
+  "Failed to fetch chart data. Please try again.": "دریافت داده‌های نمودار با خطا مواجه شد. لطفاً دوباره تلاش کنید.",
+  "Price (USD)": "قیمت (دلار)",
+  "Date": "تاریخ",
+  "Data from CoinGecko. Chart displays last 30 days of daily data.": "داده‌ها از CoinGecko. نمودار ۳۰ روز گذشته را نمایش می‌دهد.",
+  "No chart data available for": "داده‌ای برای نمایش نمودار موجود نیست برای",
+  "confirm": "تایید"
 }

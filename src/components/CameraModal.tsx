@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { apiCall } from "../services/api";
 import type { ApiResponse } from "../types/api";
 import useToast from "../hooks/useToast";
+import { useTranslation } from "react-i18next";
 
 type CameraModalProps = {
   isOpen: boolean;
@@ -26,6 +27,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
     state: { user },
   } = useAuth();
   const toast = useToast();
+  const { t } = useTranslation("translation");
   const [viewMode, setViewMode] = useState<ViewMode>("camera");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
@@ -71,7 +73,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
                   : "bg-gray-200 text-gray-800 hover:bg-gray-300"
               }`}
             >
-              Take Photo
+              t("Take Photo")
             </button>
             <button
               onClick={() => setViewMode("upload")}
@@ -81,7 +83,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
                   : "bg-gray-200 text-gray-800 hover:bg-gray-300"
               }`}
             >
-              Upload Image
+              t("Upload Image")
             </button>
           </div>
         </div>
@@ -111,7 +113,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
               {!uploadedImage ? (
                 <label className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50">
                   <span className="text-gray-500 mb-2">
-                    Click to select image
+                    t("Click to select image")
                   </span>
                   <input
                     type="file"
@@ -120,7 +122,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
                     className="hidden"
                   />
                   <span className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                    Browse Files
+                    t("Browse Files")
                   </span>
                 </label>
               ) : (
@@ -135,7 +137,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
                       onClick={() => setUploadedImage(null)}
                       className="mt-2 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition w-full"
                     >
-                      Upload Different Image
+                      t("Upload Different Image")
                     </button>
                   </div>
                 </div>
@@ -147,7 +149,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
               onClick={handleDialog}
               className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
             >
-              Close
+              t("Close")
             </button>
           </div>
         </div>

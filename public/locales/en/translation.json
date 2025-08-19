@@ -64,5 +64,18 @@
   "persian": "Persian",
   "admin": "Admin",
   "role": "Role",
-  "status": "Status"
+  "status": "Status",
+  "Take Photo": "Take Photo",
+  "Upload Image": "Upload Image",
+  "Click to select image": "Click to select image",
+  "Browse Files": "Browse Files",
+  "Upload Different Image": "Upload Different Image",
+  "Close": "Close",
+  "Price Chart (Last 30 Days)": "Price Chart (Last 30 Days)",
+  "Failed to fetch chart data. Please try again.": "Failed to fetch chart data. Please try again.",
+  "Price (USD)": "Price (USD)",
+  "Date": "Date",
+  "Data from CoinGecko. Chart displays last 30 days of daily data.": "Data from CoinGecko. Chart displays last 30 days of daily data.",
+  "No chart data available for": "No chart data available for",
+  "confirm": "Confirm"
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import CircularProgress from "./CircularProgress";
-
+import { useTranslation } from "react-i18next";
 interface ConfirmationModalProps {
   isOpen: boolean;
   message: string;
@@ -15,6 +15,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   onConfirm,
   onCancel,
 }) => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const handleConfirm = async () => {
@@ -32,7 +33,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           onClick={onCancel}
           className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300"
         >
-          Cancel
+          t("cancel")
         </button>
         <button
           onClick={handleConfirm}
@@ -48,7 +49,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               className="text-white"
             />
           )}
-          Confirm
+          t("confirm")
         </button>
       </div>
     </Modal>
