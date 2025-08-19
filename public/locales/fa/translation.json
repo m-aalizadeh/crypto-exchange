@@ -83,5 +83,16 @@
   "Date": "تاریخ",
   "Data from CoinGecko. Chart displays last 30 days of daily data.": "داده‌ها از CoinGecko. نمودار ۳۰ روز گذشته را نمایش می‌دهد.",
   "No chart data available for": "داده‌ای برای نمایش نمودار موجود نیست برای",
-  "confirm": "تایید"
+  "confirm": "تایید",
+  "Confirmation": "تاییدیه",
+  "Submit": "ارسال",
+  "Image data not available": "داده‌ای برای تصویر موجود نیست",
+  "Failed to fetch image": "دریافت تصویر با خطا مواجه شد",
+  "Expand sidebar": "باز کردن نوار کناری",
+  "Collapse sidebar": "بستن نوار کناری",
+  "No data available": "داده‌ای موجود نیست",
+  "Showing": "نمایش",
+  "Previous": "قبلی",
+  "Next": "بعدی",
+  "Positive": "مثبت"
 }

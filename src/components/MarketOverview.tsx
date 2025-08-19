@@ -58,7 +58,7 @@ const MarketOverview: React.FC<MarketOverviewProps> = ({ data }) => {
                 : "text-red-500 dark:text-red-400"
             }`}
           >
-            {marketSentiment}% Positive
+            {marketSentiment}% t("Positive")
           </span>
           <span
             className={`ml-2 text-2xl transition-colors duration-200 ${

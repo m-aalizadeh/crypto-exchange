@@ -77,5 +77,19 @@
   "Date": "Date",
   "Data from CoinGecko. Chart displays last 30 days of daily data.": "Data from CoinGecko. Chart displays last 30 days of daily data.",
   "No chart data available for": "No chart data available for",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "Confirmation": "Confirmation",
+  "Submit": "Submit",
+  "Image data not available": "Image data not available",
+  "Failed to fetch image": "Failed to fetch image",
+  "Expand sidebar": "Expand sidebar",
+  "Collapse sidebar": "Collapse sidebar",
+  "No data available": "No data available",
+  "Showing": "Showing",
+  "to": "to",
+  "of": "of",
+  "results": "results",
+  "Previous": "Previous",
+  "Next": "Next",
+  "Positive": "Positive"
 }

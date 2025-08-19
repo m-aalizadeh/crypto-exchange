@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 type ColumnDefinition<T, K extends keyof T> = {
   key: K;
@@ -39,6 +40,7 @@ const GenericTable = <T, K extends keyof T>({
   headerClassName = "bg-gray-50",
   bodyClassName = "bg-white",
 }: TableProps<T, K>) => {
+  const { t } = useTranslation("translation");
   const [sortConfig, setSortConfig] = useState(defaultSort);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -124,7 +126,7 @@ const GenericTable = <T, K extends keyof T>({
                             : ""
                         }`}
                       >
-                        {column.header}
+                        {t(column.header)}
                         {column.sortable && (
                           <span className="ml-1">
                             {sortConfig?.key === column.key
@@ -172,7 +174,11 @@ const GenericTable = <T, K extends keyof T>({
                 ) : (
                   <tr>
                     <td colSpan={columns.length} className="px-3 py-4">
-                      {emptyState}
+                      {emptyState || (
+                        <div className="py-4 text-center text-gray-500">
+                          {t("No data available")}
+                        </div>
+                      )}
                     </td>
                   </tr>
                 )}
@@ -184,16 +190,19 @@ const GenericTable = <T, K extends keyof T>({
       {totalPages > 1 && (
         <div className="mt-4 flex items-center justify-between">
           <div className="text-sm text-gray-700">
-            Showing {`  `}
+            {t("Showing")} {`  `}
             <span className="font-medium">
               {(currentPage - 1) * pageSize + 1}
             </span>
-            to {` `}
+            {` `}
+            {t("to")} {` `}
             <span className="font-medium">
               {Math.min(currentPage * pageSize, sortedData.length)}
             </span>
             {` `}
-            of<span className="font-medium">{sortedData.length}</span>results
+            {t("of")}
+            <span className="font-medium">{sortedData.length}</span>
+            {t("results")}
           </div>
           <div className="flex space-x-2">
             <button
@@ -201,7 +210,7 @@ const GenericTable = <T, K extends keyof T>({
               disabled={currentPage === 1}
               className="px-3 py-1 border rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50  "
             >
-              Previous
+              {t("Previous")}
             </button>
             {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
               if (totalPages <= 5) return i + 1;
@@ -238,7 +247,7 @@ const GenericTable = <T, K extends keyof T>({
               }
               className="px-3 py-1 border rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
-              Next
+              {t("Next")}
             </button>
           </div>
         </div>
