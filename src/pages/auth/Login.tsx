@@ -10,11 +10,7 @@ export const Login = () => {
   const { login } = useAuth();
   const { t } = useTranslation();
   const onSubmit = async (data: LoginFormData) => {
-    try {
-      await login(data.username, data.password);
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
+    await login(data.username, data.password);
   };
 
   const loginFields = [

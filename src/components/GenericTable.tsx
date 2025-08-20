@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-type ColumnDefinition<T, K extends keyof T> = {
+type DataColumnDefinition<T, K extends keyof T> = {
   key: K;
   header: string;
   width?: number;
@@ -10,7 +10,20 @@ type ColumnDefinition<T, K extends keyof T> = {
   align?: "left" | "center" | "right";
 };
 
-type TableProps<T, K extends keyof T> = {
+type CustomColumnDefinition<T> = {
+  key: string; // not restricted to keyof T
+  header: string;
+  width?: number;
+  render: (value: undefined, row: T) => React.ReactNode;
+  align?: "left" | "center" | "right";
+  sortable?: false;
+};
+
+type ColumnDefinition<T, K extends keyof T = keyof T> =
+  | DataColumnDefinition<T, K>
+  | CustomColumnDefinition<T>;
+
+type TableProps<T, K extends keyof T = keyof T> = {
   data: T[];
   columns: ColumnDefinition<T, K>[];
   defaultSort?: {
@@ -33,11 +46,7 @@ const GenericTable = <T, K extends keyof T>({
   pageSize = 10,
   onRowClick,
   className = "",
-  emptyState = (
-    <div className="py-4 text-center text-gray-500 dark:text-gray-400">
-      No data available
-    </div>
-  ),
+  emptyState,
   rowClassName,
   headerClassName = "bg-gray-50",
   bodyClassName = "bg-white",
@@ -45,6 +54,14 @@ const GenericTable = <T, K extends keyof T>({
   const { t } = useTranslation("translation");
   const [sortConfig, setSortConfig] = useState(defaultSort);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const defaultEmptyState = (
+    <div className="py-4 text-center text-gray-500 dark:text-gray-400">
+      {t("No data available")}
+    </div>
+  );
+
+  const effectiveEmptyState = emptyState || defaultEmptyState;
 
   const sortedData = useMemo(() => {
     if (!sortConfig) return data;
@@ -97,6 +114,16 @@ const GenericTable = <T, K extends keyof T>({
     }
   };
 
+  // Type guard for data columns
+  function isDataColumn<T, K extends keyof T>(
+    column: ColumnDefinition<T, K>
+  ): column is DataColumnDefinition<T, K> {
+    return (
+      typeof column.key !== "string" ||
+      (column.render === undefined && column.sortable !== false)
+    );
+  }
+
   return (
     <div className={`flex flex-col ${className}`}>
       <div className="overflow-x-auto">
@@ -117,7 +144,10 @@ const GenericTable = <T, K extends keyof T>({
                       style={{
                         width: column.width ? `${column.width}px` : "auto",
                       }}
-                      onClick={() => requestSort(column.key)}
+                      onClick={() => {
+                        if (column.sortable && isDataColumn(column))
+                          requestSort(column.key);
+                      }}
                     >
                       <div
                         className={`flex items-center ${
@@ -160,14 +190,18 @@ const GenericTable = <T, K extends keyof T>({
                           className={`whitespace-nowrap px-3 py-4 text-sm ${getAlignmentClass(
                             column.align
                           )} ${
+                            isDataColumn(column) &&
                             typeof row[column.key] === "number"
                               ? "font-mono"
                               : ""
                           }`}
                         >
                           {column.render
-                            ? column.render(row[column.key], row)
-                            : row[column.key] !== null &&
+                            ? isDataColumn(column)
+                              ? column.render(row[column.key] as T[K], row)
+                              : column.render(undefined, row)
+                            : isDataColumn(column) &&
+                              row[column.key] !== null &&
                               row[column.key] !== undefined
                             ? String(row[column.key])
                             : "-"}
@@ -178,11 +212,7 @@ const GenericTable = <T, K extends keyof T>({
                 ) : (
                   <tr>
                     <td colSpan={columns.length} className="px-3 py-4">
-                      {emptyState || (
-                        <div className="py-4 text-center text-gray-500 dark:text-gray-400">
-                          {t("No data available")}
-                        </div>
-                      )}
+                      {effectiveEmptyState}
                     </td>
                   </tr>
                 )}

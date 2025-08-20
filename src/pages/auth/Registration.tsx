@@ -22,11 +22,7 @@ export const Register = () => {
   const { register: registerUser } = useAuth();
   const { t } = useTranslation();
   const onSubmit = async (data: RegisterFormData) => {
-    try {
-      await registerUser(data.username, data.email, data.password);
-    } catch (error) {
-      console.error("Registration failed:", error);
-    }
+    await registerUser(data.username, data.email, data.password);
   };
 
   return (
@@ -47,14 +43,13 @@ export const Register = () => {
             type="text"
             autoComplete="username"
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            {...register("username", { required: "Name is required" })}
+            {...register("username", { required: t("Name is required") })}
           />
         </div>
         {errors.username && (
           <p className="mt-2 text-sm text-red-600">{errors.username.message}</p>
         )}
       </div>
-
       <div>
         <label
           htmlFor="email"
@@ -71,14 +66,13 @@ export const Register = () => {
             type="email"
             autoComplete="email"
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            {...register("email", { required: "Email is required" })}
+            {...register("email", { required: t("Email is required") })}
           />
         </div>
         {errors.email && (
           <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>
         )}
       </div>
-
       <div>
         <label
           htmlFor="password"
@@ -96,10 +90,10 @@ export const Register = () => {
             autoComplete="new-password"
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             {...register("password", {
-              required: "Password is required",
+              required: t("Password is required"),
               minLength: {
                 value: 8,
-                message: "Password must be at least 8 characters",
+                message: t("Password must be at least 8 characters"),
               },
             })}
           />
@@ -108,7 +102,6 @@ export const Register = () => {
           <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>
         )}
       </div>
-
       <div>
         <label
           htmlFor="confirmPassword"
@@ -126,9 +119,9 @@ export const Register = () => {
             autoComplete="new-password"
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             {...register("confirmPassword", {
-              required: "Please confirm your password",
+              required: t("Please confirm your password"),
               validate: (value) =>
-                value === watch("password") || "Passwords do not match",
+                value === watch("password") || t("Passwords do not match"),
             })}
           />
         </div>
@@ -138,13 +131,11 @@ export const Register = () => {
           </p>
         )}
       </div>
-
       <div>
         <Button type="submit" className="w-full">
           {t("register")}
         </Button>
       </div>
-
       <div className="text-sm text-center">
         <span className="text-gray-600">{t("alreadyHaveAccount")} </span>
         <Link

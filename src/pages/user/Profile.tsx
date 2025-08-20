@@ -34,11 +34,14 @@ const Profile = () => {
         data
       );
       if (response.status === "success" && response.data) {
-        toast.showSuccess("Profile updated successfully");
+        toast.showSuccess(
+          response.message || t("Profile updated successfully")
+        );
         await getCurrentUser();
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Update got failed";
+      const errorMessage =
+        error.response?.data?.message || t("Update got failed");
       toast.showError(errorMessage);
     }
   };
@@ -47,13 +50,13 @@ const Profile = () => {
     {
       name: "username",
       type: "text",
-      label: "Username",
+      label: t("username"),
       required: true,
     },
     {
       name: "email",
       type: "email",
-      label: "Email",
+      label: t("email"),
       required: true,
     },
   ];

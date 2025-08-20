@@ -91,5 +91,16 @@
   "results": "results",
   "Previous": "Previous",
   "Next": "Next",
-  "Positive": "Positive"
+  "Positive": "Positive",
+  "User deleted successfully": "User deleted successfully",
+  "Something went wrong!": "Something went wrong!",
+  "Admin Panel - User Management": "Admin Panel - User Management",
+  "Delete": "Delete",
+  "Are you sure you want to delete this item? This action cannot be undone.": "Are you sure you want to delete this item? This action cannot be undone.",
+  "Login successful": "Login successful",
+  "Login failed": "Login failed",
+  "Registration successful": "Registration successful",
+  "Registration failed": "Registration failed",
+  "Token got expired": "Token got expired",
+  "useAuth must be used within an AuthProvider": "useAuth must be used within an AuthProvider"
 }

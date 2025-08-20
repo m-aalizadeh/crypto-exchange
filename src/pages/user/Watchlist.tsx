@@ -103,7 +103,6 @@ const Watchlist = () => {
           </button>
         )}
       </div>
-
       {isAdding && (
         <div className="mb-4">
           <input

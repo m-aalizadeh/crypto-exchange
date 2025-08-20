@@ -94,5 +94,16 @@
   "Showing": "نمایش",
   "Previous": "قبلی",
   "Next": "بعدی",
-  "Positive": "مثبت"
+  "Positive": "مثبت",
+  "User deleted successfully": "کاربر با موفقیت حذف شد",
+  "Something went wrong!": "مشکلی پیش آمد!",
+  "Admin Panel - User Management": "پنل مدیریت - مدیریت کاربران",
+  "Delete": "حذف",
+  "Are you sure you want to delete this item? This action cannot be undone.": "آیا مطمئن هستید که می‌خواهید این مورد را حذف کنید؟ این عمل قابل بازگشت نیست.",
+  "Login successful": "ورود با موفقیت انجام شد",
+  "Login failed": "ورود ناموفق بود",
+  "Registration successful": "ثبت‌نام با موفقیت انجام شد",
+  "Registration failed": "ثبت‌نام ناموفق بود",
+  "Token got expired": "توکن منقضی شده است",
+  "useAuth must be used within an AuthProvider": "هوک useAuth باید درون AuthProvider استفاده شود"
 }

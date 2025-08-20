@@ -53,10 +53,10 @@ const AdminPanel: React.FC = () => {
         `/user/deleteUser/${selectedUser?._id}`
       );
       if (response.status === "success") {
-        toast.showSuccess("User deleted successfully");
+        toast.showSuccess(t("User deleted successfully"));
       }
     } catch (err: any) {
-      const errorMessage = err?.message || t(`Something went wrong!`);
+      const errorMessage = err?.message || t("Something went wrong!");
       toast.showError(errorMessage);
     } finally {
       setIsOpen(false);
@@ -83,29 +83,29 @@ const AdminPanel: React.FC = () => {
   const columns = [
     {
       key: "username" as const,
-      header: "Username",
+      header: t("Username"),
       sortable: true,
     },
     {
       key: "email" as const,
-      header: "Email",
+      header: t("Email"),
       sortable: true,
     },
     {
       key: "role" as const,
-      header: "Role",
+      header: t("Role"),
       sortable: true,
     },
     {
       key: "status" as const,
-      header: "Status",
+      header: t("Status"),
       sortable: true,
     },
     {
-      key: "actions" as const,
-      header: "Actions",
-      align: "right",
-      render: (_: unknown, row: User) => (
+      key: "actions",
+      header: t("Actions"),
+      align: "right" as const,
+      render: (_: undefined, row: User) => (
         <div className="flex justify-end space-x-2">
           <Tooltip content={t(`Delete`)}>
             <button
