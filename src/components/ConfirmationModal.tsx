@@ -26,18 +26,20 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onCancel}>
-      <h2 className="text-lg font-semibold mb-4">Confirmation</h2>
-      <p className="mb-6">{message}</p>
+      <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+        {t("confirmation")}
+      </h2>
+      <p className="mb-6 text-gray-700 dark:text-gray-300">{message}</p>
       <div className="flex justify-end space-x-4">
         <button
           onClick={onCancel}
-          className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300"
+          className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
         >
-          t("cancel")
+          {t("cancel")}
         </button>
         <button
           onClick={handleConfirm}
-          className={`px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600 ${
+          className={`px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600 dark:bg-red-600 dark:text-white dark:hover:bg-red-700 ${
             loading ? "opacity-75 cursor-not-allowed" : ""
           }`}
         >
@@ -49,7 +51,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               className="text-white"
             />
           )}
-          t("confirm")
+          {t("confirm")}
         </button>
       </div>
     </Modal>

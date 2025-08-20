@@ -61,29 +61,29 @@ const CameraModal: React.FC<CameraModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 dark:bg-black dark:bg-opacity-70">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-2xl w-full relative border border-gray-200 dark:border-gray-700">
         <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-2">
             <button
               onClick={() => setViewMode("camera")}
               className={`px-4 py-2 rounded transition ${
                 viewMode === "camera"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  ? "bg-blue-500 text-white dark:bg-blue-400 dark:text-gray-900"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
               }`}
             >
-              t("Take Photo")
+              {t("Take Photo")}
             </button>
             <button
               onClick={() => setViewMode("upload")}
               className={`px-4 py-2 rounded transition ${
                 viewMode === "upload"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  ? "bg-blue-500 text-white dark:bg-blue-400 dark:text-gray-900"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
               }`}
             >
-              t("Upload Image")
+              {t("Upload Image")}
             </button>
           </div>
         </div>
@@ -103,7 +103,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
                   <img
                     src={capturedImage}
                     alt="Captured"
-                    className="max-w-full h-auto rounded border border-gray-200"
+                    className="max-w-full h-auto rounded border border-gray-200 dark:border-gray-700"
                   />
                 </div>
               )}
@@ -111,9 +111,9 @@ const CameraModal: React.FC<CameraModalProps> = ({
           ) : (
             <div className="flex flex-col items-center">
               {!uploadedImage ? (
-                <label className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50">
-                  <span className="text-gray-500 mb-2">
-                    t("Click to select image")
+                <label className="w-full p-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <span className="text-gray-500 dark:text-gray-400 mb-2">
+                    {t("Click to select image")}
                   </span>
                   <input
                     type="file"
@@ -121,8 +121,8 @@ const CameraModal: React.FC<CameraModalProps> = ({
                     onChange={handleFileUpload}
                     className="hidden"
                   />
-                  <span className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                    t("Browse Files")
+                  <span className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 dark:bg-blue-400 dark:text-gray-900 dark:hover:bg-blue-500 transition">
+                    {t("Browse Files")}
                   </span>
                 </label>
               ) : (
@@ -131,13 +131,13 @@ const CameraModal: React.FC<CameraModalProps> = ({
                     <img
                       src={uploadedImage}
                       alt="Uploaded"
-                      className="max-w-full h-auto rounded border border-gray-200"
+                      className="max-w-full h-auto rounded border border-gray-200 dark:border-gray-700"
                     />
                     <button
                       onClick={() => setUploadedImage(null)}
-                      className="mt-2 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition w-full"
+                      className="mt-2 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition w-full"
                     >
-                      t("Upload Different Image")
+                      {t("Upload Different Image")}
                     </button>
                   </div>
                 </div>
@@ -147,9 +147,9 @@ const CameraModal: React.FC<CameraModalProps> = ({
           <div className="flex justify-end mt-4">
             <button
               onClick={handleDialog}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+              className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition"
             >
-              t("Close")
+              {t("Close")}
             </button>
           </div>
         </div>

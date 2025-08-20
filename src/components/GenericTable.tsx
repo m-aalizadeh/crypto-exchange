@@ -34,7 +34,9 @@ const GenericTable = <T, K extends keyof T>({
   onRowClick,
   className = "",
   emptyState = (
-    <div className="py-4 text-center text-gray-500">No data available</div>
+    <div className="py-4 text-center text-gray-500 dark:text-gray-400">
+      No data available
+    </div>
   ),
   rowClassName,
   headerClassName = "bg-gray-50",
@@ -100,16 +102,16 @@ const GenericTable = <T, K extends keyof T>({
       <div className="overflow-x-auto">
         <div className="inline-block min-w-full align-middle">
           <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-            <table className="min-w-full divide-y divide-gray-300">
+            <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
               <thead className={headerClassName}>
                 <tr>
                   {columns.map((column) => (
                     <th
                       key={column.key as string}
                       scope="col"
-                      className={`px-3 py-3.5 text-sm font-semibold text-gray-900 ${
+                      className={`px-3 py-3.5 text-sm font-semibold text-gray-900 dark:text-gray-100 ${
                         column.sortable
-                          ? "cursor-pointer hover:bg-gray-100"
+                          ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                           : ""
                       } ${getAlignmentClass(column.align)}`}
                       style={{
@@ -141,12 +143,14 @@ const GenericTable = <T, K extends keyof T>({
                   ))}
                 </tr>
               </thead>
-              <tbody className={`divide-y divide-gray-200 ${bodyClassName}`}>
+              <tbody
+                className={`divide-y divide-gray-200 dark:divide-gray-700 ${bodyClassName}`}
+              >
                 {paginatedData.length ? (
                   paginatedData.map((row, rowIndex) => (
                     <tr
                       key={rowIndex}
-                      className={`hover:bg-gray-50 ${
+                      className={`hover:bg-gray-50 dark:hover:bg-gray-800 ${
                         onRowClick ? "cursor-pointer" : ""
                       } ${rowClassName ? rowClassName(row) : ""}`}
                     >
@@ -175,7 +179,7 @@ const GenericTable = <T, K extends keyof T>({
                   <tr>
                     <td colSpan={columns.length} className="px-3 py-4">
                       {emptyState || (
-                        <div className="py-4 text-center text-gray-500">
+                        <div className="py-4 text-center text-gray-500 dark:text-gray-400">
                           {t("No data available")}
                         </div>
                       )}
