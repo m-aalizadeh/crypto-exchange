@@ -20,7 +20,7 @@ export const Sidebar = ({ isCollapsed, toggleCollapse }: SidebarProps) => {
     logout,
     state: { user },
   } = useAuth();
-  const { t } = useTranslation();
+  const { t } = useTranslation("translation");
   const navItems = [
     {
       path: "/dashboard",

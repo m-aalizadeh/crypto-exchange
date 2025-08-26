@@ -26,7 +26,7 @@ const AdminPanel: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User>();
 
-  const { t } = useTranslation();
+  const { t } = useTranslation("translation");
   const toast = useToast();
 
   useEffect(() => {

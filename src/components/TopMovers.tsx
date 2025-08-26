@@ -5,7 +5,7 @@ interface TopMoversProps {
 }
 
 const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("translation");
   if (!data.length) return null;
 
   const gainers = [...data]

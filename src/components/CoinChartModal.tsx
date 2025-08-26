@@ -34,7 +34,7 @@ const CoinChartModal: React.FC<CoinChartModalProps> = ({
   onClose,
   coinId,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("translation");
   const [chartData, setChartData] = useState<[number, number][] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

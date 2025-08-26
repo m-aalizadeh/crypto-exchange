@@ -15,7 +15,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   onConfirm,
   onCancel,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("translation");
   const [loading, setLoading] = useState(false);
 
   const handleConfirm = async () => {

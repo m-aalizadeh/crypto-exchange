@@ -25,7 +25,7 @@ const Watchlist = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const toast = useToast();
-  const { t } = useTranslation();
+  const { t } = useTranslation("translation");
   useEffect(() => {
     const fetchCryptos = async () => {
       const response = await apiCall<ApiResponse>("GET", "/allCryptos");

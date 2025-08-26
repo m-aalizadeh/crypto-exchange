@@ -20,7 +20,7 @@ export const Register = () => {
     formState: { errors },
   } = useForm<RegisterFormData>();
   const { register: registerUser } = useAuth();
-  const { t } = useTranslation();
+  const { t } = useTranslation("translation");
   const onSubmit = async (data: RegisterFormData) => {
     await registerUser(data.username, data.email, data.password);
   };

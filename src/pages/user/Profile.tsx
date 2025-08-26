@@ -17,7 +17,7 @@ const Profile = () => {
     getCurrentUser,
   } = useAuth();
   const toast = useToast();
-  const { t } = useTranslation();
+  const { t } = useTranslation("translation");
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<ProfileFormData>({
     username: user?.username || "",

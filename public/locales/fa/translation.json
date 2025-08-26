@@ -105,5 +105,7 @@
   "Registration successful": "ثبت‌نام با موفقیت انجام شد",
   "Registration failed": "ثبت‌نام ناموفق بود",
   "Token got expired": "توکن منقضی شده است",
-  "useAuth must be used within an AuthProvider": "هوک useAuth باید درون AuthProvider استفاده شود"
+  "useAuth must be used within an AuthProvider": "هوک useAuth باید درون AuthProvider استفاده شود",
+  "CAPTCHA verification failed": "اعتبارسنجی Captcha با خطا مواجه شد",
+  "CAPTCHA verification expired. Please verify again.": "Captcha منقضی شده است. لطفا دوباره اعتبارسنجی کنید"
 }

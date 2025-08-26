@@ -102,5 +102,7 @@
   "Registration successful": "Registration successful",
   "Registration failed": "Registration failed",
   "Token got expired": "Token got expired",
-  "useAuth must be used within an AuthProvider": "useAuth must be used within an AuthProvider"
+  "useAuth must be used within an AuthProvider": "useAuth must be used within an AuthProvider",
+  "CAPTCHA verification failed": "CAPTCHA verification failed",
+  "CAPTCHA verification expired. Please verify again.": "CAPTCHA verification expired. Please verify again."
 }

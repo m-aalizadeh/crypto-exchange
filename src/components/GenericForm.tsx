@@ -7,6 +7,8 @@ import type {
 } from "react-hook-form";
 import * as LucideIcons from "lucide-react";
 import { Button } from "./Button";
+import Captcha from "./Captcha";
+import { useCaptcha } from "../hooks/useCaptcha";
 
 type LucideIconType = keyof typeof LucideIcons;
 
@@ -28,6 +30,9 @@ type GenericFormProps<T extends FieldValues> = {
   formClassName?: string;
   defaultValues?: DefaultValues<T>;
   showRememberMe?: boolean;
+  showCaptcha?: boolean;
+  captchaSiteKey?: string;
+  onCaptchaVerify?: (token: string | null) => void;
 };
 
 export const GenericForm = <T extends FieldValues>({
@@ -36,6 +41,9 @@ export const GenericForm = <T extends FieldValues>({
   defaultValues,
   submitButtonText = "Submit",
   formClassName = "space-y-6",
+  showCaptcha = false,
+  captchaSiteKey = "",
+  onCaptchaVerify,
 }: GenericFormProps<T>) => {
   const {
     register,
@@ -43,10 +51,32 @@ export const GenericForm = <T extends FieldValues>({
     formState: { errors },
   } = useForm<T>({ defaultValues }) as UseFormReturn<T>;
 
+  const {
+    captchaToken,
+    captchaError,
+    handleCaptchVerify,
+    handleCaptchaExpire,
+    validateCaptcha,
+  } = useCaptcha();
+
+  const handleFormSubmit: SubmitHandler<T> = (data) => {
+    if (showCaptcha && !validateCaptcha()) {
+      return;
+    }
+    onSubmit({ ...data, captchaToken });
+  };
+
+  const handleCaptchaChange = (token: string | null) => {
+    handleCaptchVerify(token);
+    if (onCaptchaVerify) {
+      onCaptchaVerify(token);
+    }
+  };
+
   return (
     <form
       className={formClassName}
-      onSubmit={handleSubmit(onSubmit as SubmitHandler<T>)}
+      onSubmit={handleSubmit(handleFormSubmit as SubmitHandler<T>)}
     >
       {fields.map((field) => {
         const IconComponent = field.icon
@@ -100,6 +130,20 @@ export const GenericForm = <T extends FieldValues>({
           </div>
         );
       })}
+      {showCaptcha && captchaSiteKey && (
+        <div className="my-4">
+          <Captcha
+            onVerify={handleCaptchaChange}
+            onExpire={handleCaptchaExpire}
+            siteKey={captchaSiteKey}
+          />
+          {captchaError && (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400 transition-colors duration-200">
+              {captchaError}
+            </p>
+          )}
+        </div>
+      )}
       <div>
         <Button type="submit" className="w-full">
           {submitButtonText}
