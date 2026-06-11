@@ -10,13 +10,13 @@ const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
 
   const gainers = [...data]
     .sort(
-      (a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h
+      (a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h,
     )
     .slice(0, 5);
 
   const losers = [...data]
     .sort(
-      (a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h
+      (a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h,
     )
     .slice(0, 5);
 
@@ -25,8 +25,8 @@ const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
     .slice(0, 5);
 
   return (
-    <div className="space-y-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200">
+    <div className="flex gap-4">
+      <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200">
         <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white transition-colors duration-200">
           {t("topGainers")} (24h)
         </h3>
@@ -59,7 +59,7 @@ const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200">
+      <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200">
         <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white transition-colors duration-200">
           {t("topLosers")} (24h)
         </h3>
@@ -92,7 +92,7 @@ const TopMovers: React.FC<TopMoversProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200">
+      <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200">
         <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white transition-colors duration-200">
           {t("mostTraded")}
         </h3>

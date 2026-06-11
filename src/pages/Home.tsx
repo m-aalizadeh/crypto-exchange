@@ -19,15 +19,14 @@ const Home = () => {
         {t(`cryptocurrencyMarketOverview`)}
       </h1>
       <MarketOverview data={prices} />
-      <div className="flex flex-col lg:flex-row gap-6 mb-8">
-        <div className="lg:w-2/3 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+      <div className="flex flex-col gap-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
           <MarketCapChart data={prices} />
         </div>
-        <div className="lg:w-1/3">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
           <TopMovers data={prices} />
         </div>
       </div>
-
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
         <div className="p-6">
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
